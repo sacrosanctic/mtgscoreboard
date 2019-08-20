@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="6"
+      <v-col cols="12" sm="6" xl="2" lg="4"
           v-for="(player, i) in players"
           :key="i"
       >
@@ -28,34 +28,16 @@
 
 <script>
 export default {
-  data() {
-    return {
-      p1cmdr: 0,
-      players: [
-        {
-          name: "player1",
-          counter: [
-            { name: "life", value: 0 },
-            { name: "poison", value: 0 },
-            { name: "experience", value: 0 },
-            { name: "commander", value: 0 }
-          ]
-        },
-        {
-          name: "player2",
-          counter: [
-            { name: "life", value: 1 },
-            { name: "poison", value: 1 },
-            { name: "experience", value: 1 },
-            { name: "commander", value: 1 }
-          ]
-        }
-      ]
-    };
-  },
+  data: () => ({
+  }),
   methods: {
     plusOne(player, i) {
       this.players[player].counter[i].value++;
+    }
+  },
+  computed: {
+    players () {
+      return this.$store.state.players
     }
   }
 };

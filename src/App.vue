@@ -13,8 +13,8 @@
       <v-spacer></v-spacer>
 
       <v-toolbar-items>
-          <v-btn class="primary--text" text to="/">Scoreboard</v-btn>
-          <v-btn class="primary--text" text to="/about">Control</v-btn>
+        <v-btn class="primary--text" text to="/">Scoreboard</v-btn>
+        <v-btn class="primary--text" text to="/about">Control</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -36,7 +36,7 @@
 export default {
   name: "App",
   data: () => ({
-    //
+
   })
 };
 </script>
