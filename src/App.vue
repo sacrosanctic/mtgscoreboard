@@ -1,6 +1,10 @@
 <template>
   <v-app>
-    <v-navigation-drawer app>
+    <v-navigation-drawer
+      app
+      disable-resize-watcher
+      v-model="drawer"
+    >
       <!-- -->
     </v-navigation-drawer>
 
@@ -14,7 +18,8 @@
 
       <v-toolbar-items>
         <v-btn class="primary--text" text to="/">Scoreboard</v-btn>
-        <v-btn class="primary--text" text to="/about">Control</v-btn>
+        <v-btn class="primary--text" text to="/tracker">Tracker</v-btn>
+        <v-btn class="primary--text" text to="/maintracker">One person Tracker</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -36,7 +41,7 @@
 export default {
   name: "App",
   data: () => ({
-
+    drawer: false
   })
 };
 </script>

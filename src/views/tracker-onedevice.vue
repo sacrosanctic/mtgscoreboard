@@ -1,9 +1,24 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" sm="6" xl="2" lg="4"
-          v-for="(player, i) in players"
-          :key="i"
+      <v-col>
+        <v-btn @click="addPlayer">
+          add player
+        </v-btn>
+        <v-btn @click="removePlayer">
+          remove player
+        </v-btn>
+
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col 
+        cols="12" 
+        sm="6" 
+        lg="3" 
+        xl="2"
+        v-for="(player, i) in players"
+        :key="i"
       >
         <v-card
         >
@@ -32,11 +47,14 @@ export default {
   }),
   methods: {
     plusOne(player, i) {
-      this.players[player].counter[i].value++;
+      this.players[player].counter[i].value++
+    },
+    addPlayer() {
+      this.$store.dispatch('addPlayer')
     }
   },
   computed: {
-    players () {
+    players() {
       return this.$store.state.players
     }
   }
