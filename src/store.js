@@ -8,21 +8,11 @@ export default new Vuex.Store({
     players: [
       {
         name: 'player1',
-        counter: [
-          { name: 'life', value: 0 },
-          { name: 'poison', value: 0 },
-          { name: 'experience', value: 0 },
-          { name: 'commander', value: 0 }
-        ]
+        counter: [0,0,0,0]
       },
       {
         name: 'player2',
-        counter: [
-          { name: 'life', value: 1 },
-          { name: 'poison', value: 1 },
-          { name: 'experience', value: 1 },
-          { name: 'commander', value: 1 }
-        ]
+        counter: [0,0,0,0]
       }
     ]
   },
@@ -34,18 +24,21 @@ export default new Vuex.Store({
   actions: {
     addPlayer({ commit }) {
       const newPlayer = {
-        name: 'players',
-        counter: [
-          { name: 'life', value: 0 },
-          { name: 'poison', value: 0 },
-          { name: 'experience', value: 0 },
-          { name: 'commander', value: 0 }
-        ]
+        name: 'player2',
+        counter: [0,0,0,0]
       }
       commit('addPlayer', newPlayer)
     }
   },
   getters: {
-
+    getPlayerList(state) {
+      const playerList = []
+      // console.log(state.players)
+      for(var player of state.players) {
+        playerList.push(player.name)
+        // console.log(player.counter[1])
+      }
+      return playerList
+    }
   }
 })

@@ -17,24 +17,10 @@
         sm="6" 
         lg="3" 
         xl="2"
-        v-for="(player, i) in players"
-        :key="i"
       >
         <v-card
         >
           <v-card-title>{{player.name}}</v-card-title>
-          <v-card-text>
-            <v-list>
-              <v-list-item v-for="(item, j) in player.counter" :key="item.name">
-                <v-list-item-content>{{item.name}}: {{item.value}}</v-list-item-content>
-                <v-list-item-action>
-                  <v-card-actions>
-                    <v-btn @click="plusOne(i,j)">+1</v-btn>
-                  </v-card-actions>
-                </v-list-item-action>
-              </v-list-item>
-            </v-list>
-          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -44,6 +30,7 @@
 <script>
 export default {
   data: () => ({
+    currentPlayer: []
   }),
   methods: {
     plusOne(player, i) {
@@ -51,11 +38,17 @@ export default {
     },
     addPlayer() {
       this.$store.dispatch('addPlayer')
+    },
+    removePlayer() {
+
     }
   },
   computed: {
     players() {
       return this.$store.state.players
+    },
+    playerList() {
+      return this.$store.getters.getPlayerList
     }
   }
 };
