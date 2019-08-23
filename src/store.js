@@ -7,10 +7,12 @@ export default new Vuex.Store({
   state: {
     players: [
       {
+        id: 0,
         name: 'player1',
         counter: [0,0,0,0]
       },
       {
+        id: 1,
         name: 'player2',
         counter: [0,0,0,0]
       }
@@ -24,6 +26,7 @@ export default new Vuex.Store({
   actions: {
     addPlayer({ commit }) {
       const newPlayer = {
+        id: new Date,
         name: 'player2',
         counter: [0,0,0,0]
       }
@@ -33,10 +36,12 @@ export default new Vuex.Store({
   getters: {
     getPlayerList(state) {
       const playerList = []
-      // console.log(state.players)
       for(var player of state.players) {
-        playerList.push(player.name)
-        // console.log(player.counter[1])
+        const obj = {
+          id: player.id,
+          name: player.name
+        }
+        playerList.push(obj)
       }
       return playerList
     }

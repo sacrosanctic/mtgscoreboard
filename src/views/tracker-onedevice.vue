@@ -8,6 +8,26 @@
         <v-btn @click="removePlayer">
           remove player
         </v-btn>
+        <v-row>
+          <v-col cols="4">
+              <v-row
+              >
+                <v-col
+              v-for="player in players"
+              :key="player.id"
+              cols="6"
+
+                >
+                <div>
+                  {{player.name}}
+                </div>
+
+
+                
+                </v-col>
+              </v-row>
+          </v-col>
+        </v-row>
 
       </v-col>
     </v-row>
@@ -20,7 +40,15 @@
       >
         <v-card
         >
-          <v-card-title>{{player.name}}</v-card-title>
+        <v-card-title>scott</v-card-title>
+        <v-list>
+
+          <v-list-item>
+            <v-list-item-content>
+              life
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
         </v-card>
       </v-col>
     </v-row>
@@ -30,12 +58,9 @@
 <script>
 export default {
   data: () => ({
-    currentPlayer: []
+    currentPlayerId: 0
   }),
   methods: {
-    plusOne(player, i) {
-      this.players[player].counter[i].value++
-    },
     addPlayer() {
       this.$store.dispatch('addPlayer')
     },
