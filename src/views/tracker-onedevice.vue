@@ -6,15 +6,15 @@
         <v-btn @click="removePlayer">remove player</v-btn>
         <v-row>
           <v-col cols="12" sm="4">
-              <v-row>
+              <v-row no-gutters>
                 <v-col
                   v-for="player in players"
                   :key="player.id"
                   cols="6"
                 >
-                  <div @click="setCurrentPlayer(player.id)">
+                  <v-card @click="setCurrentPlayer(player.id)" outlined tile>
                     {{player.name}}
-                  </div>
+                  </v-card>
                 </v-col>
               </v-row>
           </v-col>
@@ -32,21 +32,20 @@
           <v-card-title> {{ players[currentPlayerId].name }}</v-card-title>
           <v-list>
             <v-list-item>
-              <v-list-item-content>
-              <v-list-item-title>
-                life
-                {{players[currentPlayerId].counter[0]}}
-                
-              </v-list-item-title>
-              </v-list-item-content>
+              <v-card
+                v-for="(counter, i) in players[currentPlayerId].counter"
+                :key="i"
+                @click="setCurrentCounter(i)"
+              >
+                {{counterList[i]}}  {{players[currentPlayerId].counter[i]}}
+              </v-card>
             </v-list-item>
           </v-list>
           <v-card-actions>
-                <v-btn @click="setCounter(currentPlayerId,0,+5)">+5</v-btn>
-                <v-btn @click="setCounter(currentPlayerId,0,1)">+1</v-btn>
-                <v-btn @click="setCounter(currentPlayerId,0,-1)">-1</v-btn>
-                <v-btn @click="setCounter(currentPlayerId,0,-5)">-5</v-btn>
-
+                <v-btn @click="setCounter(currentPlayerId,currentCounter,+5)">+5</v-btn>
+                <v-btn @click="setCounter(currentPlayerId,currentCounter,1)">+1</v-btn>
+                <v-btn @click="setCounter(currentPlayerId,currentCounter,-1)">-1</v-btn>
+                <v-btn @click="setCounter(currentPlayerId,currentCounter,-5)">-5</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -57,11 +56,21 @@
 <script>
 export default {
   data: () => ({
-    currentPlayerId: 0
+    counterList: [
+      'life',
+      'poison',
+      'cmdr',
+      'experience'
+    ],
+    currentPlayerId: 0,
+    currentCounter: 0
   }),
   methods: {
     setCurrentPlayer(id) {
       this.currentPlayerId = id
+    },
+    setCurrentCounter(counter) {
+      this.currentCounter = counter
     },
     setCounter(player, counter, amount) {
       const obj = {
