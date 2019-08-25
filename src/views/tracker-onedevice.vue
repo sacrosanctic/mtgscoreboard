@@ -56,12 +56,6 @@
 <script>
 export default {
   data: () => ({
-    counterList: [
-      'life',
-      'poison',
-      'cmdr',
-      'experience'
-    ],
     currentPlayerId: 0,
     currentCounter: 0
   }),
@@ -90,6 +84,9 @@ export default {
   computed: {
     players() {
       return this.$store.state.players
+    },
+    counterList() {
+      return this.$store.state.counterList
     }
   }
 };

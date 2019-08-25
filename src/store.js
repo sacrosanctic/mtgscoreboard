@@ -5,16 +5,23 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    counterList: [
+      'life',
+      'cmdr',
+      'experience',
+      'energy',
+      'poison',
+    ],
     players: [
       {
         id: 0,
         name: 'player1',
-        counter: [0,0,0,0]
+        counter: [0,0,0,0,0]
       },
       {
         id: 1,
         name: 'player2',
-        counter: [0,0,0,0]
+        counter: [0,0,0,0,0]
       }
     ],
   },
@@ -41,7 +48,7 @@ export default new Vuex.Store({
       const newPlayer = {
         id: this.state.players.length,
         name: 'player' + (this.state.players.length+1),
-        counter: [0,0,0,0]
+        counter: [0,0,0,0,0]
       }
       commit('addPlayer', newPlayer)
     },

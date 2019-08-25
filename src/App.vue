@@ -17,7 +17,7 @@
       <v-spacer></v-spacer>
 
       <v-toolbar-items>
-        <v-btn class="primary--text" text to="/">Scoreboard</v-btn>
+        <v-btn class="primary--text" text to="/scoreboard">Scoreboard</v-btn>
         <v-btn class="primary--text" text to="/tracker">Tracker</v-btn>
         <v-btn class="primary--text" text to="/maintracker">One person Tracker</v-btn>
       </v-toolbar-items>
@@ -42,6 +42,10 @@ export default {
   name: "App",
   data: () => ({
     drawer: false
-  })
+  }),
+  mounted () {
+    console.log(process.env.DB)
+
+  }
 };
 </script>

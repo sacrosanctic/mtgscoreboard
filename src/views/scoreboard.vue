@@ -14,7 +14,9 @@
           <v-card-title>{{player.name}}</v-card-title>
           <v-card-text>
             <v-list>
+              <card></card>
               <v-list-item v-for="(item, j) in player.counter" :key="item.name">
+
                 <v-list-item-content>{{counterList[j]}}: {{item}}</v-list-item-content>
                 <v-list-item-action>
                   <v-card-actions>
@@ -30,19 +32,22 @@
 </template>
 
 <script>
+import card from '@/components/card.vue'
+
 export default {
+
   data: () => ({
-    counterList: [
-      'life',
-      'poison',
-      'cmdr',
-      'experience'
-    ]
   }),
   computed: {
     players() {
       return this.$store.state.players
+    },
+    counterList() {
+      return this.$store.state.counterList
     }
+  },
+  components: {
+    card
   }
 }
 </script>
