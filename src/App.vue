@@ -44,8 +44,6 @@ export default {
     drawer: false
   }),
   mounted () {
-    console.log(process.env.DB)
-
   }
 };
 </script>

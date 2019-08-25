@@ -3,7 +3,7 @@
     <v-row>
         <v-col>
             <v-img
-              src=""
+              :src="img"
             ></v-img>
         </v-col>
     </v-row>
@@ -11,18 +11,24 @@
 </template>
 
 <script>
+
 export default {
     data: () => ({
-      playload: null
+      img: ''
     }),
+    props: {
+      carduri: String,
+    },
     mounted () {
-      axios
-        .get('https://api.scryfall.com')
+      this.$axios.get(this.carduri)
         .then(
-          response => (
-            this.payload = response
-          )
-        )
+          response => {
+            this.img = response.data.image_uris.large
+        })
+        .catch(error => {
+          error
+        })
+        .finally(()=>{})
     }
 }
 </script>

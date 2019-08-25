@@ -16,12 +16,14 @@ export default new Vuex.Store({
       {
         id: 0,
         name: 'player1',
-        counter: [0,0,0,0,0]
+        counter: [0,0,0,0,0],
+        cardURI: 'https://api.scryfall.com/cards/b9d895af-7e8c-419f-bc5d-5596083fbfb6'
       },
       {
         id: 1,
         name: 'player2',
-        counter: [0,0,0,0,0]
+        counter: [0,0,0,0,0],
+        cardURI: 'https://api.scryfall.com/cards/c654737d-34ac-42ff-ae27-3a3bbb930fc1'
       }
     ],
   },
@@ -48,7 +50,8 @@ export default new Vuex.Store({
       const newPlayer = {
         id: this.state.players.length,
         name: 'player' + (this.state.players.length+1),
-        counter: [0,0,0,0,0]
+        counter: [0,0,0,0,0],
+        cardURI: 'https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature'
       }
       commit('addPlayer', newPlayer)
     },

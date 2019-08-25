@@ -12,9 +12,13 @@
         <v-card
         >
           <v-card-title>{{player.name}}</v-card-title>
+            <v-row no-gutters="">
+              <v-col cols="4">
+              <card :carduri="player.cardURI"></card>
+              </v-col>
+              <v-col cols="8">
           <v-card-text>
             <v-list>
-              <card></card>
               <v-list-item v-for="(item, j) in player.counter" :key="item.name">
 
                 <v-list-item-content>{{counterList[j]}}: {{item}}</v-list-item-content>
@@ -25,6 +29,9 @@
               </v-list-item>
             </v-list>
           </v-card-text>
+                
+              </v-col>
+            </v-row>
         </v-card>
       </v-col>
     </v-row>
