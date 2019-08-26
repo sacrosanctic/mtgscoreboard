@@ -32,10 +32,12 @@
           <v-card-title> {{ players[currentPlayerId].name }}</v-card-title>
           <v-list>
             <v-list-item>
-              <v-card
+              <!-- <card :carduri="players[currentPlayerId].cardURI"></card> -->
+              <v-card width="70"
                 v-for="(counter, i) in players[currentPlayerId].counter"
                 :key="i"
                 @click="setCurrentCounter(i)"
+                tile
               >
                 {{counterList[i]}}  {{players[currentPlayerId].counter[i]}}
               </v-card>
@@ -47,6 +49,21 @@
                 <v-btn @click="setCounter(currentPlayerId,currentCounter,-1)">-1</v-btn>
                 <v-btn @click="setCounter(currentPlayerId,currentCounter,-5)">-5</v-btn>
           </v-card-actions>
+          <v-list>
+            <v-list-item 
+              v-for="player in players"
+              :key="player.id"
+            >
+              <v-list-item-title>
+                {{player.name}}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+
+          <v-card-actions>
+                <v-btn>Cmdr Damage</v-btn>
+
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -54,6 +71,8 @@
 </template>
 
 <script>
+// import card from '@/components/card.vue'
+
 export default {
   data: () => ({
     currentPlayerId: 0,
@@ -88,6 +107,9 @@ export default {
     counterList() {
       return this.$store.state.counterList
     }
+  },
+  components: {
+    // card
   }
 };
 </script>
