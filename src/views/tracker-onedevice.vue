@@ -12,9 +12,7 @@
                   :key="player.id"
                   cols="6"
                 >
-                  <v-card @click="setCurrentPlayer(player.id)" outlined tile>
-                    {{player.name}}
-                  </v-card>
+                  <v-btn @click="setCurrentPlayer(player.id)" v-text="player.name"></v-btn>
                 </v-col>
               </v-row>
           </v-col>
@@ -30,24 +28,39 @@
       >
         <v-card>
           <v-card-title> {{ players[currentPlayerId].name }}</v-card-title>
-          <v-list>
-            <v-list-item>
+          <v-list dense>
+            <v-list-item-group mandatory color="red">
+
+
+            <v-list-item
+              v-for="(counter, i) in players[currentPlayerId].counter"
+              :key="i"
+              @click="setCurrentCounter(i)"
+            >
+              <v-list-item-content>
+                <v-list-item-title>
+                {{counterList[i]}}  {{players[currentPlayerId].counter[i]}}
+                </v-list-item-title>
+              </v-list-item-content>
+
+
               <!-- <card :carduri="players[currentPlayerId].cardURI"></card> -->
-              <v-card width="70"
+              <!-- <v-card width="70"
                 v-for="(counter, i) in players[currentPlayerId].counter"
                 :key="i"
                 @click="setCurrentCounter(i)"
                 tile
               >
                 {{counterList[i]}}  {{players[currentPlayerId].counter[i]}}
-              </v-card>
+              </v-card> -->
             </v-list-item>
+            </v-list-item-group>
           </v-list>
           <v-card-actions>
-                <v-btn @click="setCounter(currentPlayerId,currentCounter,+5)">+5</v-btn>
-                <v-btn @click="setCounter(currentPlayerId,currentCounter,1)">+1</v-btn>
-                <v-btn @click="setCounter(currentPlayerId,currentCounter,-1)">-1</v-btn>
                 <v-btn @click="setCounter(currentPlayerId,currentCounter,-5)">-5</v-btn>
+                <v-btn @click="setCounter(currentPlayerId,currentCounter,-1)">-1</v-btn>
+                <v-btn @click="setCounter(currentPlayerId,currentCounter,+1)">+1</v-btn>
+                <v-btn @click="setCounter(currentPlayerId,currentCounter,+5)">+5</v-btn>
           </v-card-actions>
           <v-list>
             <v-list-item 
