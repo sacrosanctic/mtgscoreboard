@@ -30,12 +30,29 @@ export default new Vuex.Store({
         cardURI: 'https://api.scryfall.com/cards/c654737d-34ac-42ff-ae27-3a3bbb930fc1'
       }
     ],
+    cmdrDmg: [
+      [5,6],
+      [4,2]
+    ]
   },
   mutations: {
     addPlayer(state, payload) {
+      const numOfPlayers = state.players.length
+      for(var item of state.cmdrDmg) {
+        item.push(0)
+      }
+      var arr = []
+      for(var i=0;i<=numOfPlayers;i++) {
+        arr.push(0)
+      }
+      state.cmdrDmg.push(arr)
       state.players.push(payload)
     },
     removePlayer(state) {
+      state.cmdrDmg.pop()
+      for(var item of state.cmdrDmg) {
+        item.pop()
+      }
       state.players.pop()
     },
     setCounter(state, payload) {
@@ -44,9 +61,15 @@ export default new Vuex.Store({
         payload.counter,
         state.players[payload.player].counter[payload.counter]+payload.amount
       )
+    },
+    setCmdrDmg(state, payload) {
+      state.cmdrDmg[payload.defender,payload.attacker] + payload.amount
     }
   },
   actions: {
+    setCmdrDmg( {commit }, payload) {
+      commit('setCmdrDmg', payload)
+    },
     setCounter({ commit }, payload) {
       commit('setCounter', payload)
     },

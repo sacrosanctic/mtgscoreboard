@@ -29,53 +29,47 @@
         <v-card>
           <v-card-title> {{ players[currentPlayerId].name }}</v-card-title>
           <v-list dense>
-            <v-list-item-group mandatory color="red">
-
-
-            <v-list-item
-              v-for="(counter, i) in players[currentPlayerId].counter"
-              :key="i"
-              @click="setCurrentCounter(i)"
-            >
-              <v-list-item-content>
-                <v-list-item-title>
-                {{counterList[i]}}  {{players[currentPlayerId].counter[i]}}
-                </v-list-item-title>
-              </v-list-item-content>
-
-
-              <!-- <card :carduri="players[currentPlayerId].cardURI"></card> -->
-              <!-- <v-card width="70"
+            <v-list-item-group color="red" v-model="listValue">
+              <v-list-item
                 v-for="(counter, i) in players[currentPlayerId].counter"
                 :key="i"
                 @click="setCurrentCounter(i)"
-                tile
+                :value="'counter-'+i"
               >
-                {{counterList[i]}}  {{players[currentPlayerId].counter[i]}}
-              </v-card> -->
-            </v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>
+                  {{counterList[i]}}  {{players[currentPlayerId].counter[i]}}
+                  </v-list-item-title>
+                </v-list-item-content>
+                <!-- <card :carduri="players[currentPlayerId].cardURI"></card> -->
+              </v-list-item>
             </v-list-item-group>
           </v-list>
           <v-card-actions>
-                <v-btn @click="setCounter(currentPlayerId,currentCounter,-5)">-5</v-btn>
+                <!-- <v-btn @click="setCounter(currentPlayerId,currentCounter,-5)">-5</v-btn>
                 <v-btn @click="setCounter(currentPlayerId,currentCounter,-1)">-1</v-btn>
                 <v-btn @click="setCounter(currentPlayerId,currentCounter,+1)">+1</v-btn>
-                <v-btn @click="setCounter(currentPlayerId,currentCounter,+5)">+5</v-btn>
+                <v-btn @click="setCounter(currentPlayerId,currentCounter,+5)">+5</v-btn> -->
+                <v-btn @click="setValue(-5)">-5</v-btn>
+                <v-btn @click="setValue(-1)">-1</v-btn>
+                <v-btn @click="setValue(+1)">+1</v-btn>
+                <v-btn @click="setValue(+5)">+5</v-btn>
           </v-card-actions>
-          <v-list>
-            <v-list-item 
-              v-for="player in players"
-              :key="player.id"
-            >
-              <v-list-item-title>
-                {{player.name}}
-              </v-list-item-title>
-            </v-list-item>
+          <v-list dense>
+            <v-list-item-group color="red" v-model="listValue">
+              <v-list-item 
+                v-for="player in players"
+                :key="player.id"
+                :value="'player-'+player.id"
+              >
+                <v-list-item-title>
+                  {{player.name}} {{cmdrDmg[currentPlayerId][player.id]}}
+                </v-list-item-title>
+              </v-list-item>
+            </v-list-item-group>
           </v-list>
-
           <v-card-actions>
                 <v-btn>Cmdr Damage</v-btn>
-
           </v-card-actions>
         </v-card>
       </v-col>
@@ -89,7 +83,8 @@
 export default {
   data: () => ({
     currentPlayerId: 0,
-    currentCounter: 0
+    currentCounter: 0,
+    listValue: null
   }),
   methods: {
     setCurrentPlayer(id) {
@@ -98,19 +93,36 @@ export default {
     setCurrentCounter(counter) {
       this.currentCounter = counter
     },
+    setCmdrDmg(attacker, defender, amount) {
+      const obj = {
+        attacker: attacker,
+        defender: defender,
+        amount: amount
+      }
+      this.$store.dispatch('setCmdrDmg', obj)
+    },
     setCounter(player, counter, amount) {
       const obj = {
         player: player,
         counter: counter,
         amount: amount
       }
-      return this.$store.dispatch('setCounter', obj)
+      this.$store.dispatch('setCounter', obj)
     },
     addPlayer() {
       this.$store.dispatch('addPlayer')
     },
     removePlayer() {
       this.$store.dispatch('removePlayer')
+    },
+    setValue(amount) {
+      if(this.listValue == null) return false
+      var split = this.listValue.split('-')
+      if(split[0]=='player') {
+        this.setCmdrdmg(split[1],this.currentPlayerId,amount)
+      }else if(split[0]=='counter') {
+        this.setCounter(this.currentPlayerId,split[1],amount)
+      }
     },
   },
   computed: {
@@ -119,6 +131,9 @@ export default {
     },
     counterList() {
       return this.$store.state.counterList
+    },
+    cmdrDmg() {
+      return this.$store.state.cmdrDmg
     }
   },
   components: {
