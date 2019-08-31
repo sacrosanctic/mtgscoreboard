@@ -46,10 +46,6 @@
             </v-list-item-group>
           </v-list>
           <v-card-actions>
-                <!-- <v-btn @click="setCounter(currentPlayerId,currentCounter,-5)">-5</v-btn>
-                <v-btn @click="setCounter(currentPlayerId,currentCounter,-1)">-1</v-btn>
-                <v-btn @click="setCounter(currentPlayerId,currentCounter,+1)">+1</v-btn>
-                <v-btn @click="setCounter(currentPlayerId,currentCounter,+5)">+5</v-btn> -->
                 <v-btn @click="setValue(-5)">-5</v-btn>
                 <v-btn @click="setValue(-1)">-1</v-btn>
                 <v-btn @click="setValue(+1)">+1</v-btn>
@@ -57,20 +53,26 @@
           </v-card-actions>
           <v-list dense>
             <v-list-item-group color="red" v-model="listValue">
-              <v-list-item 
+              <v-container>
+                <v-row>
+                  <v-col cols="6"
                 v-for="player in players"
                 :key="player.id"
+                  
+                  >
+              <v-list-item 
                 :value="'player-'+player.id"
               >
                 <v-list-item-title>
                   {{player.name}} {{cmdrDmg[currentPlayerId][player.id]}}
                 </v-list-item-title>
               </v-list-item>
+
+                  </v-col>
+                </v-row>
+              </v-container>
             </v-list-item-group>
           </v-list>
-          <v-card-actions>
-                <v-btn>Cmdr Damage</v-btn>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -119,8 +121,8 @@ export default {
       if(this.listValue == null) return false
       var split = this.listValue.split('-')
       if(split[0]=='player') {
-        this.setCmdrdmg(split[1],this.currentPlayerId,amount)
-      }else if(split[0]=='counter') {
+        this.setCmdrDmg(split[1],this.currentPlayerId,amount)
+      } else if(split[0]=='counter') {
         this.setCounter(this.currentPlayerId,split[1],amount)
       }
     },

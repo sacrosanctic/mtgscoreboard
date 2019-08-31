@@ -63,11 +63,15 @@ export default new Vuex.Store({
       )
     },
     setCmdrDmg(state, payload) {
-      state.cmdrDmg[payload.defender,payload.attacker] + payload.amount
+      Vue.set(
+        state.cmdrDmg[payload.defender],
+        payload.attacker,
+        state.cmdrDmg[payload.defender][payload.attacker] + payload.amount
+      )
     }
   },
   actions: {
-    setCmdrDmg( {commit }, payload) {
+    setCmdrDmg({ commit }, payload) {
       commit('setCmdrDmg', payload)
     },
     setCounter({ commit }, payload) {
