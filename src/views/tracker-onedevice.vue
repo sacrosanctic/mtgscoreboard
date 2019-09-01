@@ -81,12 +81,14 @@
 
 <script>
 // import card from '@/components/card.vue'
+import {db} from '@/db.js'
 
 export default {
   data: () => ({
     currentPlayerId: 0,
     currentCounter: 0,
-    listValue: null
+    listValue: null,
+    test: {}
   }),
   methods: {
     setCurrentPlayer(id) {
@@ -130,16 +132,21 @@ export default {
   computed: {
     players() {
       return this.$store.state.players
+      // return this.test.players
     },
     counterList() {
       return this.$store.state.counterList
     },
     cmdrDmg() {
       return this.$store.state.cmdrDmg
+      // return this.test.cmdrDmg
     }
   },
   components: {
     // card
+  },
+  firebase: {
+    test: db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep')
   }
 };
 </script>

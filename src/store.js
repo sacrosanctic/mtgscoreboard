@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import VuexPersistence from 'vuex-persist'
-import * as firebase from 'firebase'
+// import VuexPersistence from 'vuex-persist'
+// import { db } from '@/db.js'
+import firebase from 'firebase/app'
+import 'firebase/database'
 
-const vuexLocal = new VuexPersistence({
-  storage: window.localStorage
-})
+// const vuexLocal = new VuexPersistence({
+//   storage: window.localStorage
+// })
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -34,7 +37,8 @@ export default new Vuex.Store({
     cmdrDmg: [
       [5,6],
       [4,2]
-    ]
+    ],
+    status: null
   },
   mutations: {
     addPlayer(state, payload) {
@@ -62,15 +66,19 @@ export default new Vuex.Store({
         payload.counter,
         state.players[payload.player].counter[payload.counter]+payload.amount
       )
-      firebase.database().ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep').update(state)
+      firebase.database().ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep')
+        .update(state)
         .then(response => {
-          console.log(response)
+          // commit('setStatus', response)
+          // console.log(response)
         })
         .catch(error => {
-          console.log(error)
+          // commit('setStatus', error)
+          // console.log(error)
         })
         .finally(() => {
-          console.log('done')
+          // commit('setStatus', 'done')
+          // console.log('done')
         })
     },
     setCmdrDmg(state, payload) {
@@ -79,6 +87,9 @@ export default new Vuex.Store({
         payload.attacker,
         state.cmdrDmg[payload.defender][payload.attacker] + payload.amount
       )
+    },
+    setStatus(state, payload) {
+      state.status = payload
     }
   },
   actions: {
@@ -87,6 +98,20 @@ export default new Vuex.Store({
     },
     setCounter({ commit }, payload) {
       commit('setCounter', payload)
+      // db.database().ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep')
+      //   .update(this.store.state)
+      //   .then(response => {
+      //     commit('setStatus', response)
+      //     // console.log(response)
+      //   })
+      //   .catch(error => {
+      //     commit('setStatus', error)
+      //     // console.log(error)
+      //   })
+      //   .finally(() => {
+      //     commit('setStatus', 'done')
+      //     // console.log('done')
+      //   })
     },
     addPlayer({ commit }) {
       const newPlayer = {
