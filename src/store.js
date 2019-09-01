@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 // import VuexPersistence from 'vuex-persist'
 // import { db } from '@/db.js'
-import firebase from 'firebase/app'
-import 'firebase/database'
+// import firebase from 'firebase/app'
+// import 'firebase/database'
 
 // const vuexLocal = new VuexPersistence({
 //   storage: window.localStorage
@@ -24,17 +24,19 @@ export default new Vuex.Store({
       {
         id: 0,
         name: 'player1',
-        counter: [0,0,0,0,0],
-        cardURI: 'https://api.scryfall.com/cards/b9d895af-7e8c-419f-bc5d-5596083fbfb6'
+        cardURI: 'https://api.scryfall.com/cards/b9d895af-7e8c-419f-bc5d-5596083fbfb6',
       },
       {
         id: 1,
         name: 'player2',
-        counter: [0,0,0,0,0],
-        cardURI: 'https://api.scryfall.com/cards/c654737d-34ac-42ff-ae27-3a3bbb930fc1'
+        cardURI: 'https://api.scryfall.com/cards/c654737d-34ac-42ff-ae27-3a3bbb930fc1',
       }
     ],
-    cmdrDmg: [
+    counters: [
+      [0,0,0,0,0],
+      [0,0,0,0,0]
+    ],
+    cmdrDmgs: [
       [5,6],
       [4,2]
     ],
@@ -42,50 +44,40 @@ export default new Vuex.Store({
   },
   mutations: {
     addPlayer(state, payload) {
-      const numOfPlayers = state.players.length
+      //add player
+      state.players.push(payload)
+
+      //additional variable to track new player
       for(var item of state.cmdrDmg) {
         item.push(0)
       }
+
+      //new player gets their own tracker
       var arr = []
-      for(var i=0;i<=numOfPlayers;i++) {
+      for(var i=0;i<state.players.length;i++) {
         arr.push(0)
       }
       state.cmdrDmg.push(arr)
-      state.players.push(payload)
     },
     removePlayer(state) {
+      state.players.pop()
       state.cmdrDmg.pop()
       for(var item of state.cmdrDmg) {
         item.pop()
       }
-      state.players.pop()
     },
     setCounter(state, payload) {
       Vue.set(
-        state.players[payload.player].counter,
-        payload.counter,
-        state.players[payload.player].counter[payload.counter]+payload.amount
+        state.counters[payload.player],
+        payload.type,
+        state.counters[payload.player][payload.type] + payload.amount
       )
-      firebase.database().ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep')
-        .update(state)
-        .then(response => {
-          // commit('setStatus', response)
-          // console.log(response)
-        })
-        .catch(error => {
-          // commit('setStatus', error)
-          // console.log(error)
-        })
-        .finally(() => {
-          // commit('setStatus', 'done')
-          // console.log('done')
-        })
     },
     setCmdrDmg(state, payload) {
       Vue.set(
-        state.cmdrDmg[payload.defender],
-        payload.attacker,
-        state.cmdrDmg[payload.defender][payload.attacker] + payload.amount
+        state.cmdrDmgs[payload.player],
+        payload.type,
+        state.cmdrDmgs[payload.player][payload.type] + payload.amount
       )
     },
     setStatus(state, payload) {
@@ -117,7 +109,6 @@ export default new Vuex.Store({
       const newPlayer = {
         id: this.state.players.length,
         name: 'player' + (this.state.players.length+1),
-        counter: [0,0,0,0,0],
         cardURI: 'https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature'
       }
       commit('addPlayer', newPlayer)
@@ -127,6 +118,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    counters(state) {
+      return state.counters
+    }
   },
   // plugins: [vuexLocal.plugin]
 })

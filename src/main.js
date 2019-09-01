@@ -7,7 +7,6 @@ import axios from 'axios'
 import { db } from '@/db.js'
 import { rtdbPlugin } from 'vuefire'
 
-
 Vue.use(rtdbPlugin)
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios

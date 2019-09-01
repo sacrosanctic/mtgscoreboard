@@ -31,14 +31,14 @@
           <v-list dense>
             <v-list-item-group color="red" v-model="listValue">
               <v-list-item
-                v-for="(counter, i) in players[currentPlayerId].counter"
+                v-for="(counter, i) in counters[currentPlayerId]"
                 :key="i"
                 @click="setCurrentCounter(i)"
                 :value="'counter-'+i"
               >
                 <v-list-item-content>
                   <v-list-item-title>
-                  {{counterList[i]}}  {{players[currentPlayerId].counter[i]}}
+                  {{counterList[i]}}  {{counter[i]}}
                   </v-list-item-title>
                 </v-list-item-content>
                 <!-- <card :carduri="players[currentPlayerId].cardURI"></card> -->
@@ -56,18 +56,16 @@
               <v-container>
                 <v-row>
                   <v-col cols="6"
-                v-for="player in players"
-                :key="player.id"
-                  
+                    v-for="player in players"
+                    :key="player.id"
                   >
-              <v-list-item 
-                :value="'player-'+player.id"
-              >
-                <v-list-item-title>
-                  {{player.name}} {{cmdrDmg[currentPlayerId][player.id]}}
-                </v-list-item-title>
-              </v-list-item>
-
+                    <v-list-item 
+                      :value="'player-'+player.id"
+                    >
+                      <v-list-item-title>
+                        {{player.name}} {{cmdrDmgs[currentPlayerId][player.id]}}
+                      </v-list-item-title>
+                    </v-list-item>
                   </v-col>
                 </v-row>
               </v-container>
@@ -81,14 +79,14 @@
 
 <script>
 // import card from '@/components/card.vue'
-import {db} from '@/db.js'
+// import { db } from '@/db.js'
 
 export default {
   data: () => ({
     currentPlayerId: 0,
     currentCounter: 0,
     listValue: null,
-    test: {}
+    test: {},
   }),
   methods: {
     setCurrentPlayer(id) {
@@ -97,10 +95,10 @@ export default {
     setCurrentCounter(counter) {
       this.currentCounter = counter
     },
-    setCmdrDmg(attacker, defender, amount) {
+    setCmdrDmg(player, attacker, amount) {
       const obj = {
-        attacker: attacker,
-        defender: defender,
+        player: player,
+        type: attacker,
         amount: amount
       }
       this.$store.dispatch('setCmdrDmg', obj)
@@ -108,7 +106,7 @@ export default {
     setCounter(player, counter, amount) {
       const obj = {
         player: player,
-        counter: counter,
+        type: counter,
         amount: amount
       }
       this.$store.dispatch('setCounter', obj)
@@ -123,30 +121,31 @@ export default {
       if(this.listValue == null) return false
       var split = this.listValue.split('-')
       if(split[0]=='player') {
-        this.setCmdrDmg(split[1],this.currentPlayerId,amount)
+        this.setCmdrDmg(this.currentPlayerId,split[1],amount)
       } else if(split[0]=='counter') {
         this.setCounter(this.currentPlayerId,split[1],amount)
       }
     },
   },
   computed: {
-    players() {
-      return this.$store.state.players
-      // return this.test.players
-    },
     counterList() {
       return this.$store.state.counterList
     },
-    cmdrDmg() {
-      return this.$store.state.cmdrDmg
-      // return this.test.cmdrDmg
-    }
+    counters() {
+      return this.$store.getters.counters
+    },
+    cmdrDmgs() {
+      return this.$store.state.cmdrDmgs
+    },
+    players() {
+      return this.$store.state.players
+    },
   },
   components: {
     // card
   },
   firebase: {
-    test: db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep')
+    // test: db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep')
   }
 };
 </script>
