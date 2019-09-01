@@ -2,8 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 // import VuexPersistence from 'vuex-persist'
 import { db } from '@/db.js'
-// import firebase from 'firebase/app'
-// import 'firebase/database'
+import { vuexfireMutations, firebaseAction } from 'vuexfire'
 
 // const vuexLocal = new VuexPersistence({
 //   storage: window.localStorage
@@ -40,82 +39,93 @@ export default new Vuex.Store({
       [5,6],
       [4,2]
     ],
-    status: null
+    status: null,
+    loading: null
   },
   mutations: {
-    addPlayer(state, payload) {
-      //add player
-      state.players.push(payload)
+    setLoading(state, payload) {
+      state.loading = payload
+    },
+    // addPlayer(state, payload) {
+    //   //add player
+    //   state.players.push(payload)
 
-      //additional variable to track new player
-      for(var item of state.cmdrDmgs) {
-        item.push(0)
-      }
+    //   //additional variable to track new player
+    //   for(var item of state.cmdrDmgs) {
+    //     item.push(0)
+    //   }
 
-      //new player gets their own tracker
-      var arr = []
-      for(var i=0;i<state.players.length;i++) {
-        arr.push(0)
-      }
-      state.cmdrDmg.push(arr)
-    },
-    removePlayer(state) {
-      state.players.pop()
-      state.cmdrDmg.pop()
-      for(var item of state.cmdrDmg) {
-        item.pop()
-      }
-    },
-    setCounter(state, payload) {
-      Vue.set(
-        state.counters[payload.player],
-        payload.type,
-        state.counters[payload.player][payload.type] + payload.amount
-      )
-    },
-    setCmdrDmg(state, payload) {
-      Vue.set(
-        state.cmdrDmgs[payload.player],
-        payload.type,
-        state.cmdrDmgs[payload.player][payload.type] + payload.amount
-      )
-    },
-    setStatus(state, payload) {
-      state.status = payload
-    }
+    //   //new player gets their own tracker
+    //   var arr = []
+    //   for(var i=0;i<state.players.length;i++) {
+    //     arr.push(0)
+    //   }
+    //   state.cmdrDmg.push(arr)
+    // },
+    // removePlayer(state) {
+    //   state.players.pop()
+    //   state.cmdrDmg.pop()
+    //   for(var item of state.cmdrDmg) {
+    //     item.pop()
+    //   }
+    // },
+    // setCounter(state, payload) {
+    //   Vue.set(
+    //     state.counters[payload.player],
+    //     payload.type,
+    //     state.counters[payload.player][payload.type] + payload.amount
+    //   )
+    // },
+    // setCmdrDmg(state, payload) {
+    //   Vue.set(
+    //     state.cmdrDmgs[payload.player],
+    //     payload.type,
+    //     state.cmdrDmgs[payload.player][payload.type] + payload.amount
+    //   )
+    // },
+    // setStatus(state, payload) {
+    //   state.status = payload
+    // },
+    ...vuexfireMutations,
   },
   actions: {
-    setCmdrDmg({ commit }, payload) {
-      commit('setCmdrDmg', payload)
-    },
-    setCounter({ commit }, payload) {
-      commit('setCounter', payload)
-      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep')
-        .update(this.state)
-        .then(response => {
-          commit('setStatus', response)
-          // console.log(response)
-        })
-        .catch(error => {
-          commit('setStatus', error)
-          // console.log(error)
-        })
-        .finally(() => {
-          commit('setStatus', 'done')
-          // console.log('done')
-        })
-    },
-    addPlayer({ commit }) {
-      const newPlayer = {
-        id: this.state.players.length,
-        name: 'player' + (this.state.players.length+1),
-        cardURI: 'https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature'
-      }
-      commit('addPlayer', newPlayer)
-    },
-    removePlayer({ commit }) {
-      commit('removePlayer')
-    }
+    init: firebaseAction(function(context) {
+      context.commit('setLoading','loading')
+      context.bindFirebaseRef('counters', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters'))
+      context.bindFirebaseRef('players', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players'))
+      context.bindFirebaseRef('cmdrDmgs', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs'))
+    })
+    // setCmdrDmg({ commit }, payload) {
+    //   commit('setCmdrDmg', payload)
+    // },
+    // setCounter({ commit }, payload) {
+    //   commit('setCounter', payload)
+    //   db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters')
+    //     .update(this.state.counters)
+    //     .then(response => {
+    //       commit('setStatus', response)
+    //       // console.log(response)
+    //     })
+    //     .catch(error => {
+    //       commit('setStatus', error)
+    //       // console.log(error)
+    //     })
+    //     .finally(() => {
+    //       commit('setStatus', 'done')
+    //       // console.log('done')
+    //     })
+    // },
+    // addPlayer({ commit }) {
+    //   const newPlayer = {
+    //     id: this.state.players.length,
+    //     name: 'player' + (this.state.players.length+1),
+    //     cardURI: 'https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature'
+    //   }
+    //   commit('addPlayer', newPlayer)
+    // },
+    // removePlayer({ commit }) {
+    //   commit('removePlayer')
+    // }
   },
   getters: {
   },

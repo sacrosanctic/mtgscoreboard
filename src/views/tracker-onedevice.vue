@@ -133,16 +133,24 @@ export default {
     },
     counters() {
       return this.$store.state.counters
+      // return this.test.counters
     },
     cmdrDmgs() {
       return this.$store.state.cmdrDmgs
+      // return this.test.cmdrDmgs
     },
     players() {
       return this.$store.state.players
+      // return this.test.players
     },
   },
   components: {
     // card
+  },
+  mounted () {
+    // this.$store.dispatch('bindCountersRef')
+    // this.$store.dispatch('bindPlayersRef')
+    // this.$store.dispatch('bindCmdrDmgsRef')
   },
   firebase: {
     // test: db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep')
