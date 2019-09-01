@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 // import VuexPersistence from 'vuex-persist'
-// import { db } from '@/db.js'
+import { db } from '@/db.js'
 // import firebase from 'firebase/app'
 // import 'firebase/database'
 
@@ -48,7 +48,7 @@ export default new Vuex.Store({
       state.players.push(payload)
 
       //additional variable to track new player
-      for(var item of state.cmdrDmg) {
+      for(var item of state.cmdrDmgs) {
         item.push(0)
       }
 
@@ -90,20 +90,20 @@ export default new Vuex.Store({
     },
     setCounter({ commit }, payload) {
       commit('setCounter', payload)
-      // db.database().ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep')
-      //   .update(this.store.state)
-      //   .then(response => {
-      //     commit('setStatus', response)
-      //     // console.log(response)
-      //   })
-      //   .catch(error => {
-      //     commit('setStatus', error)
-      //     // console.log(error)
-      //   })
-      //   .finally(() => {
-      //     commit('setStatus', 'done')
-      //     // console.log('done')
-      //   })
+      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep')
+        .update(this.state)
+        .then(response => {
+          commit('setStatus', response)
+          // console.log(response)
+        })
+        .catch(error => {
+          commit('setStatus', error)
+          // console.log(error)
+        })
+        .finally(() => {
+          commit('setStatus', 'done')
+          // console.log('done')
+        })
     },
     addPlayer({ commit }) {
       const newPlayer = {
@@ -118,9 +118,6 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    counters(state) {
-      return state.counters
-    }
   },
   // plugins: [vuexLocal.plugin]
 })

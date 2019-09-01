@@ -38,7 +38,7 @@
               >
                 <v-list-item-content>
                   <v-list-item-title>
-                  {{counterList[i]}}  {{counter[i]}}
+                  {{counterList[i]}}  {{counter}}
                   </v-list-item-title>
                 </v-list-item-content>
                 <!-- <card :carduri="players[currentPlayerId].cardURI"></card> -->
@@ -132,7 +132,7 @@ export default {
       return this.$store.state.counterList
     },
     counters() {
-      return this.$store.getters.counters
+      return this.$store.state.counters
     },
     cmdrDmgs() {
       return this.$store.state.cmdrDmgs
