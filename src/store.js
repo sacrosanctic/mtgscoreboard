@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
+import * as firebase from 'firebase'
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage
@@ -61,6 +62,16 @@ export default new Vuex.Store({
         payload.counter,
         state.players[payload.player].counter[payload.counter]+payload.amount
       )
+      firebase.database().ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep').update(state)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        .finally(() => {
+          console.log('done')
+        })
     },
     setCmdrDmg(state, payload) {
       Vue.set(
@@ -92,5 +103,5 @@ export default new Vuex.Store({
   },
   getters: {
   },
-  plugins: [vuexLocal.plugin]
+  // plugins: [vuexLocal.plugin]
 })
