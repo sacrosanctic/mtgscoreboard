@@ -94,12 +94,12 @@ export default new Vuex.Store({
       context.bindFirebaseRef('counters', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters'))
       context.bindFirebaseRef('players', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players'))
       context.bindFirebaseRef('cmdrDmgs', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs'))
-    })
-    // setCmdrDmg({ commit }, payload) {
-    //   commit('setCmdrDmg', payload)
-    // },
-    // setCounter({ commit }, payload) {
-    //   commit('setCounter', payload)
+    }),
+    setCmdrDmg({ commit }, payload) {
+      // commit('setCmdrDmg', payload)
+    },
+    setCounter({ commit }, payload) {
+      // commit('setCounter', payload)
     //   db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters')
     //     .update(this.state.counters)
     //     .then(response => {
@@ -114,7 +114,7 @@ export default new Vuex.Store({
     //       commit('setStatus', 'done')
     //       // console.log('done')
     //     })
-    // },
+    },
     // addPlayer({ commit }) {
     //   const newPlayer = {
     //     id: this.state.players.length,
