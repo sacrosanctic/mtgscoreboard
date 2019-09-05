@@ -12,9 +12,7 @@
                   :key="player.id"
                   cols="6"
                 >
-                  <v-card @click="setCurrentPlayer(player.id)" outlined tile>
-                    {{player.name}}
-                  </v-card>
+                  <v-btn @click="setCurrentPlayer(player.id)" v-text="player.name"></v-btn>
                 </v-col>
               </v-row>
           </v-col>
@@ -30,40 +28,49 @@
       >
         <v-card>
           <v-card-title> {{ players[currentPlayerId].name }}</v-card-title>
-          <v-list>
-            <v-list-item>
-              <!-- <card :carduri="players[currentPlayerId].cardURI"></card> -->
-              <v-card width="70"
-                v-for="(counter, i) in players[currentPlayerId].counter"
+          <v-list dense>
+            <v-list-item-group color="red" v-model="listValue">
+              <v-list-item
+                v-for="(counter, i) in counters[currentPlayerId]"
                 :key="i"
                 @click="setCurrentCounter(i)"
-                tile
+                :value="'counter-'+i"
               >
-                {{counterList[i]}}  {{players[currentPlayerId].counter[i]}}
-              </v-card>
-            </v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>
+                  {{counterList[i]}}  {{counter}}
+                  </v-list-item-title>
+                </v-list-item-content>
+                <!-- <card :carduri="players[currentPlayerId].cardURI"></card> -->
+              </v-list-item>
+            </v-list-item-group>
           </v-list>
           <v-card-actions>
-                <v-btn @click="setCounter(currentPlayerId,currentCounter,+5)">+5</v-btn>
-                <v-btn @click="setCounter(currentPlayerId,currentCounter,1)">+1</v-btn>
-                <v-btn @click="setCounter(currentPlayerId,currentCounter,-1)">-1</v-btn>
-                <v-btn @click="setCounter(currentPlayerId,currentCounter,-5)">-5</v-btn>
+                <v-btn @click="setValue(-5)">-5</v-btn>
+                <v-btn @click="setValue(-1)">-1</v-btn>
+                <v-btn @click="setValue(+1)">+1</v-btn>
+                <v-btn @click="setValue(+5)">+5</v-btn>
           </v-card-actions>
-          <v-list>
-            <v-list-item 
-              v-for="player in players"
-              :key="player.id"
-            >
-              <v-list-item-title>
-                {{player.name}}
-              </v-list-item-title>
-            </v-list-item>
+          <v-list dense>
+            <v-list-item-group color="red" v-model="listValue">
+              <v-container>
+                <v-row>
+                  <v-col cols="6"
+                    v-for="player in players"
+                    :key="player.id"
+                  >
+                    <v-list-item 
+                      :value="'player-'+player.id"
+                    >
+                      <v-list-item-title>
+                        {{player.name}} {{cmdrDmgs[currentPlayerId][player.id]}}
+                      </v-list-item-title>
+                    </v-list-item>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-list-item-group>
           </v-list>
-
-          <v-card-actions>
-                <v-btn>Cmdr Damage</v-btn>
-
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -72,11 +79,14 @@
 
 <script>
 // import card from '@/components/card.vue'
+// import { db } from '@/db.js'
 
 export default {
   data: () => ({
     currentPlayerId: 0,
-    currentCounter: 0
+    currentCounter: 0,
+    listValue: null,
+    test: {},
   }),
   methods: {
     setCurrentPlayer(id) {
@@ -85,13 +95,21 @@ export default {
     setCurrentCounter(counter) {
       this.currentCounter = counter
     },
+    setCmdrDmg(player, attacker, amount) {
+      const obj = {
+        player: player,
+        type: attacker,
+        amount: amount
+      }
+      this.$store.dispatch('setCmdrDmg', obj)
+    },
     setCounter(player, counter, amount) {
       const obj = {
         player: player,
-        counter: counter,
+        type: counter,
         amount: amount
       }
-      return this.$store.dispatch('setCounter', obj)
+      this.$store.dispatch('setCounter', obj)
     },
     addPlayer() {
       this.$store.dispatch('addPlayer')
@@ -99,17 +117,43 @@ export default {
     removePlayer() {
       this.$store.dispatch('removePlayer')
     },
+    setValue(amount) {
+      if(this.listValue == null) return false
+      var split = this.listValue.split('-')
+      if(split[0]=='player') {
+        this.setCmdrDmg(this.currentPlayerId,split[1],amount)
+      } else if(split[0]=='counter') {
+        this.setCounter(this.currentPlayerId,split[1],amount)
+      }
+    },
   },
   computed: {
-    players() {
-      return this.$store.state.players
-    },
     counterList() {
       return this.$store.state.counterList
-    }
+    },
+    counters() {
+      return this.$store.state.counters
+      // return this.test.counters
+    },
+    cmdrDmgs() {
+      return this.$store.state.cmdrDmgs
+      // return this.test.cmdrDmgs
+    },
+    players() {
+      return this.$store.state.players
+      // return this.test.players
+    },
   },
   components: {
     // card
+  },
+  mounted () {
+    // this.$store.dispatch('bindCountersRef')
+    // this.$store.dispatch('bindPlayersRef')
+    // this.$store.dispatch('bindCmdrDmgsRef')
+  },
+  firebase: {
+    // test: db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep')
   }
 };
 </script>
