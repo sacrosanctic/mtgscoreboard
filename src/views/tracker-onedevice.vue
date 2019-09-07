@@ -95,22 +95,6 @@ export default {
     setCurrentCounter(counter) {
       this.currentCounter = counter
     },
-    setCmdrDmg(player, attacker, amount) {
-      const obj = {
-        player: player,
-        type: attacker,
-        amount: amount
-      }
-      this.$store.dispatch('setCmdrDmg', obj)
-    },
-    setCounter(player, counter, amount) {
-      const obj = {
-        player: player,
-        type: counter,
-        amount: amount
-      }
-      this.$store.dispatch('setCounter', obj)
-    },
     addPlayer() {
       this.$store.dispatch('addPlayer')
     },
@@ -120,10 +104,17 @@ export default {
     setValue(amount) {
       if(this.listValue == null) return false
       var split = this.listValue.split('-')
+
+      const obj = {
+        player : this.currentPlayerId,
+        type: split[1],
+        amount: amount
+      }
+      
       if(split[0]=='player') {
-        this.setCmdrDmg(this.currentPlayerId,split[1],amount)
+        this.$store.dispatch('setCmdrDmg', obj)
       } else if(split[0]=='counter') {
-        this.setCounter(this.currentPlayerId,split[1],amount)
+        this.$store.dispatch('setCounter', obj)
       }
     },
   },

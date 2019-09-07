@@ -69,20 +69,6 @@ export default new Vuex.Store({
     //     item.pop()
     //   }
     // },
-    // setCounter(state, payload) {
-    //   Vue.set(
-    //     state.counters[payload.player],
-    //     payload.type,
-    //     state.counters[payload.player][payload.type] + payload.amount
-    //   )
-    // },
-    // setCmdrDmg(state, payload) {
-    //   Vue.set(
-    //     state.cmdrDmgs[payload.player],
-    //     payload.type,
-    //     state.cmdrDmgs[payload.player][payload.type] + payload.amount
-    //   )
-    // },
     // setStatus(state, payload) {
     //   state.status = payload
     // },
@@ -95,26 +81,28 @@ export default new Vuex.Store({
       context.bindFirebaseRef('players', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players'))
       context.bindFirebaseRef('cmdrDmgs', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs'))
     }),
-    setCmdrDmg({ commit }, payload) {
-      // commit('setCmdrDmg', payload)
-    },
-    setCounter({ commit }, payload) {
-      // commit('setCounter', payload)
-    //   db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters')
-    //     .update(this.state.counters)
-    //     .then(response => {
-    //       commit('setStatus', response)
-    //       // console.log(response)
-    //     })
-    //     .catch(error => {
-    //       commit('setStatus', error)
-    //       // console.log(error)
-    //     })
-    //     .finally(() => {
-    //       commit('setStatus', 'done')
-    //       // console.log('done')
-    //     })
-    },
+    setCmdrDmg: firebaseAction(({ state }, payload) => {
+      return db
+        .ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/' + payload.player + '/' + payload.type)
+        .transaction(value => {
+          return value + payload.amount
+        })
+        .then(() => {
+        })
+        .catch(error => {
+        })
+    }),
+    setCounter: firebaseAction(({ state }, payload) => {
+      return db
+        .ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/' + payload.player + '/' + payload.type)
+        .transaction(value => {
+          return value + payload.amount
+        })
+        .then(() => {
+        })
+        .catch(error => {
+        })
+    }),
     // addPlayer({ commit }) {
     //   const newPlayer = {
     //     id: this.state.players.length,
@@ -129,5 +117,4 @@ export default new Vuex.Store({
   },
   getters: {
   },
-  // plugins: [vuexLocal.plugin]
 })
