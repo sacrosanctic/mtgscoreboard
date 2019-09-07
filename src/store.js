@@ -40,7 +40,7 @@ export default new Vuex.Store({
       [4,2]
     ],
     status: null,
-    loading: null
+    loading: false
   },
   mutations: {
     setLoading(state, payload) {
@@ -76,32 +76,35 @@ export default new Vuex.Store({
   },
   actions: {
     init: firebaseAction(function(context) {
-      context.commit('setLoading','loading')
+      context.commit('setLoading',true)
       context.bindFirebaseRef('counters', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters'))
       context.bindFirebaseRef('players', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players'))
       context.bindFirebaseRef('cmdrDmgs', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs'))
+      context.commit('setLoading',false)
     }),
-    setCmdrDmg: firebaseAction(({ state }, payload) => {
+    setCmdrDmg: firebaseAction((_, payload) => {
       return db
         .ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/' + payload.player + '/' + payload.type)
         .transaction(value => {
           return value + payload.amount
         })
         .then(() => {
+          db
+            .ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/'+ payload.type + '/0')
+            .transaction(value => {
+              return value - payload.amount
+            })
+            .catch(() => {})
         })
-        .catch(error => {
-        })
+        .catch(() => {})
     }),
-    setCounter: firebaseAction(({ state }, payload) => {
+    setCounter: firebaseAction((_, payload) => {
       return db
         .ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/' + payload.player + '/' + payload.type)
         .transaction(value => {
           return value + payload.amount
         })
-        .then(() => {
-        })
-        .catch(error => {
-        })
+        .catch(() => {})
     }),
     // addPlayer({ commit }) {
     //   const newPlayer = {

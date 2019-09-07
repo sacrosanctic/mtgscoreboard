@@ -19,13 +19,11 @@
               <v-col cols="8">
           <v-card-text>
             <v-list>
-              <v-list-item v-for="(item, j) in player.counter" :key="item.name">
-
-                <v-list-item-content>{{counterList[j]}}: {{item}}</v-list-item-content>
-                <v-list-item-action>
-                  <v-card-actions>
-                  </v-card-actions>
-                </v-list-item-action>
+              <v-list-item 
+                v-for="(counter, j) in counters[player.id]" 
+                :key="counterList[j]"
+              >
+                <v-list-item-content>{{counterList[j]}}: {{counter}}</v-list-item-content>
               </v-list-item>
             </v-list>
           </v-card-text>
@@ -46,12 +44,18 @@ export default {
   data: () => ({
   }),
   computed: {
+    counterList() {
+      return this.$store.state.counterList
+    },
+    counters() {
+      return this.$store.state.counters
+    },
+    cmdrDmgs() {
+      return this.$store.state.cmdrDmgs
+    },
     players() {
       return this.$store.state.players
     },
-    counterList() {
-      return this.$store.state.counterList
-    }
   },
   components: {
     card

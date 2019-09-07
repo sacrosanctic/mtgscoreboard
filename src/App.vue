@@ -19,7 +19,6 @@
       <v-toolbar-items>
         <v-btn class="primary--text" text to="/scoreboard">Scoreboard</v-btn>
         <v-btn class="primary--text" text to="/tracker">Tracker</v-btn>
-        <v-btn class="primary--text" text to="/maintracker">One person Tracker</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
