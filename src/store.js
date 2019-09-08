@@ -36,8 +36,8 @@ export default new Vuex.Store({
       [0,0,0,0,0]
     ],
     cmdrDmgs: [
-      [5,6],
-      [4,2]
+      [0,0],
+      [0,0]
     ],
     status: null,
     loading: false
@@ -106,6 +106,35 @@ export default new Vuex.Store({
         })
         .catch(() => {})
     }),
+    reset: firebaseAction(() => {
+      const players = [
+        {
+          id: 0,
+          name: 'player1',
+          cardURI: 'https://api.scryfall.com/cards/b9d895af-7e8c-419f-bc5d-5596083fbfb6',
+        },
+        {
+          id: 1,
+          name: 'player2',
+          cardURI: 'https://api.scryfall.com/cards/c654737d-34ac-42ff-ae27-3a3bbb930fc1',
+        }
+      ]
+      const counters = [
+        [40,0,0,0,0],
+        [40,0,0,0,0]
+      ]
+      const cmdrDmgs = [
+        [0,0],
+        [0,0]
+      ]
+         db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players/')
+          .set(players)
+         db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/')
+          .set(counters)
+         db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/')
+          .set(cmdrDmgs)
+
+    })
     // addPlayer({ commit }) {
     //   const newPlayer = {
     //     id: this.state.players.length,

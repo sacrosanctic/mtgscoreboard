@@ -14,11 +14,17 @@
         <span class="font-weight-light">Scoreboard</span>
       </v-toolbar-title>
 
-      <v-spacer></v-spacer>
 
       <v-toolbar-items>
         <v-btn class="primary--text" text to="/">Scoreboard</v-btn>
         <v-btn class="primary--text" text to="/tracker">Tracker</v-btn>
+      </v-toolbar-items>
+
+      <v-spacer></v-spacer>
+
+      <v-toolbar-items>
+        <v-btn class="primary--text" text @click="reset()">Reset</v-btn>
+        <v-btn class="primary--text" text @click="dialog=true">Invite</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -29,10 +35,54 @@
         <!-- If using vue-router -->
         <router-view></router-view>
       </v-container>
-    </v-content>
+
+  <div class="text-center">
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <template v-slot:activator="{ on }">
+        <!-- <v-btn
+          color="red lighten-2"
+          dark
+          v-on="on"
+        >
+          Click Me
+        </v-btn> -->
+      </template>
+
+      <v-card>
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >
+          QR CODE
+        </v-card-title>
+        <v-img
+         height="500px"
+         src=".\assets\qr-code1000.svg"
+        ></v-img>
+
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog = false"
+          >
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
+
+
+        </v-content>
     <v-footer app>
       <!-- -->
     </v-footer>
+
   </v-app>
 </template>
 
@@ -40,9 +90,15 @@
 export default {
   name: "App",
   data: () => ({
-    drawer: false
+    drawer: false,
+    dialog: false
   }),
   mounted () {
+  },
+  methods: {
+    reset() {
+      this.$store.dispatch('reset')
+    },
   }
 };
 </script>
