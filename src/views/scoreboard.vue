@@ -1,7 +1,14 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" sm="6" lg="3" xl="2" v-for="(player, i) in players" :key="i">
+      <v-col 
+        cols="12" 
+        sm="6" 
+        lg="3" 
+        xl="2" 
+        v-for="(player, i) in players" 
+        :key="i"
+      >
         <v-card>
           <v-card-title>{{player.name}}</v-card-title>
           <v-row no-gutters>
@@ -15,7 +22,7 @@
                     <v-list-item-content>{{counterList[j]}}: {{counter}}</v-list-item-content>
                   </v-list-item>
                   <v-list-item v-for="(player2, k) in players" :key="k">
-                    <v-list-item-content>{{player2.name}}: {{cmdrDmgs[player2.id][player.id]}}</v-list-item-content>
+                    <v-list-item-content>{{player2.name + ": " + cmdrDmgs[player2.id][player.id]}}</v-list-item-content>
                   </v-list-item>
                 </v-list>
               </v-card-text>
@@ -29,23 +36,28 @@
 
 <script>
 import card from "@/components/card.vue";
+import { mapState } from 'vuex'
 
 export default {
   data: () => ({}),
-  computed: {
-    counterList() {
-      return this.$store.state.counterList;
-    },
-    counters() {
-      return this.$store.state.counters;
-    },
-    cmdrDmgs() {
-      return this.$store.state.cmdrDmgs;
-    },
-    players() {
-      return this.$store.state.players;
-    }
-  },
+  computed: mapState([
+    'players', 'counterList', 'counters', 'cmdrDmgs', 
+  ]),
+  // computed: {
+
+  //   counterList() {
+  //     return this.$store.state.counterList;
+  //   },
+  //   counters() {
+  //     return this.$store.state.counters;
+  //   },
+  //   cmdrDmgs() {
+  //     return this.$store.state.cmdrDmgs;
+  //   },
+  //   players() {
+  //     return this.$store.state.players;
+  //   }
+  // },
   components: {
     card
   }

@@ -60,7 +60,7 @@
         </v-card-title>
         <v-img
          height="500px"
-         src=".\assets\qr-code1000.svg"
+         src=".\assets\qr-code1000.png"
         ></v-img>
 
         <v-card-actions>
@@ -99,6 +99,9 @@ export default {
     reset() {
       this.$store.dispatch('reset')
     },
+  },
+  created () {
+    this.$store.dispatch('init')
   }
 };
 </script>

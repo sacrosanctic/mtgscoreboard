@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row v-if="!$store.state.loading">
       <v-col>
         <v-btn @click="addPlayer">add player</v-btn>
         <v-btn @click="removePlayer">remove player</v-btn>
@@ -79,7 +79,7 @@
 
 <script>
 // import card from '@/components/card.vue'
-// import { db } from '@/db.js'
+// import { mapState } from 'vuex'
 
 export default {
   data: () => ({
@@ -118,6 +118,9 @@ export default {
       }
     },
   },
+  // computed: mapState([
+  //   'players', 'counterList', 'counters', 'cmdrDmgs', 
+  // ]),
   computed: {
     counterList() {
       return this.$store.state.counterList

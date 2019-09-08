@@ -36,8 +36,8 @@ export default new Vuex.Store({
       [0,0,0,0,0]
     ],
     cmdrDmgs: [
-      [0,0],
-      [0,0]
+      [1,2],
+      [3,4]
     ],
     status: null,
     loading: false
