@@ -79,7 +79,7 @@
 
 <script>
 // import card from '@/components/card.vue'
-// import { mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   data: () => ({
@@ -118,23 +118,23 @@ export default {
       }
     },
   },
-  // computed: mapState([
-  //   'players', 'counterList', 'counters', 'cmdrDmgs', 
-  // ]),
-  computed: {
-    counterList() {
-      return this.$store.state.counterList
-    },
-    counters() {
-      return this.$store.state.counters
-    },
-    cmdrDmgs() {
-      return this.$store.state.cmdrDmgs
-    },
-    players() {
-      return this.$store.state.players
-    },
-  },
+  computed: mapState([
+    'players', 'counterList', 'counters', 'cmdrDmgs', 
+  ]),
+  // computed: {
+  //   counterList() {
+  //     return this.$store.state.counterList
+  //   },
+  //   counters() {
+  //     return this.$store.state.counters
+  //   },
+  //   cmdrDmgs() {
+  //     return this.$store.state.cmdrDmgs
+  //   },
+  //   players() {
+  //     return this.$store.state.players
+  //   },
+  // },
   components: {
     // card
   },

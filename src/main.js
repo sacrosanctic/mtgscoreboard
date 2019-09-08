@@ -17,6 +17,6 @@ new Vue({
   vuetify,
   render: h => h(App),
   created () {
-    // this.$store.dispatch('init')
+    this.$store.dispatch('init')
   }
 }).$mount('#app')

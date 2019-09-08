@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 // import VuexPersistence from 'vuex-persist'
 import { db } from '@/db.js'
 import { vuexfireMutations, firebaseAction } from 'vuexfire'
+import axios from 'axios'
 
 // const vuexLocal = new VuexPersistence({
 //   storage: window.localStorage
@@ -134,14 +135,57 @@ export default new Vuex.Store({
          db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/')
           .set(cmdrDmgs)
 
+    }),
+    addPlayer: firebaseAction(({ state }) =>{
+      var newPlayerId = state.players.length
+      var cardURI = ''
+      axios.get('https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature')
+        .then(response => {
+          cardURI = response.data.uri
+
+
+
+      const newPlayer = {
+        id: newPlayerId,
+        name: 'player' + (newPlayerId+1),
+        cardURI: cardURI
+        // cardURI: 'https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature'
+      }
+
+      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players/'+ newPlayerId)
+        .set(newPlayer)
+
+      for(let i=0;i<newPlayerId;i++) {
+        db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/'+ i + '/' + newPlayerId)
+          .set(0)
+      }
+      var arr = []
+      for(let i=0;i<=newPlayerId;i++) {
+        arr.push(0)
+      }
+      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/'+ newPlayerId)
+      .set(arr)
+
+      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/'+ newPlayerId)
+      .set([40,0,0,0,0])
     })
-    // addPlayer({ commit }) {
-    //   const newPlayer = {
-    //     id: this.state.players.length,
-    //     name: 'player' + (this.state.players.length+1),
-    //     cardURI: 'https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature'
+
+    })
+    // addPlayer(state, payload) {
+    //   //add player
+    //   state.players.push(payload)
+
+    //   //additional variable to track new player
+    //   for(var item of state.cmdrDmgs) {
+    //     item.push(0)
     //   }
-    //   commit('addPlayer', newPlayer)
+
+    //   //new player gets their own tracker
+    //   var arr = []
+    //   for(var i=0;i<state.players.length;i++) {
+    //     arr.push(0)
+    //   }
+    //   state.cmdrDmg.push(arr)
     // },
     // removePlayer({ commit }) {
     //   commit('removePlayer')
