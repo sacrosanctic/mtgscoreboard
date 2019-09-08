@@ -6,9 +6,14 @@ import tracker from './views/tracker.vue'
 Vue.use(Router)
 
 export default new Router({
+  base:
+    process.env.NODE_ENV === 'production'
+      ? '/mtgscoreboard/'
+      : '/',
+  
   routes: [
     {
-      path: '/scoreboard',
+      path: '/',
       name: 'scoreboard',
       component: scoreboard
     },

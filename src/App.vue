@@ -17,7 +17,7 @@
       <v-spacer></v-spacer>
 
       <v-toolbar-items>
-        <v-btn class="primary--text" text to="/scoreboard">Scoreboard</v-btn>
+        <v-btn class="primary--text" text to="/">Scoreboard</v-btn>
         <v-btn class="primary--text" text to="/tracker">Tracker</v-btn>
       </v-toolbar-items>
     </v-app-bar>
