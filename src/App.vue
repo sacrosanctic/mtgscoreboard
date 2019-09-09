@@ -21,6 +21,24 @@
       </v-toolbar-items>
 
       <v-spacer></v-spacer>
+      <v-autocomplete
+        :items="items"
+        :search-input.sync="search"
+        class="ax-4"
+        color="blue"
+        flat
+        hide-details
+        label="Card Name"
+        solo
+        hide-no-data
+        cache-items
+        :loading="loading2"
+      ></v-autocomplete>
+<!-- 
+        v-model="select"
+
+
+ -->
 
       <v-toolbar-items>
         <v-btn class="primary--text" text @click="reset()">Reset</v-btn>
@@ -91,17 +109,39 @@ export default {
   name: "App",
   data: () => ({
     drawer: false,
-    dialog: false
+    dialog: false,
+    entries: [],
+    loading2: false,
+    search: null,
   }),
+  computed: {
+    items () {
+      return this.entries
+    }
+  },
   mounted () {
+  },
+  watch: {
+    search (val) {
+       // if(this.items.length > 0) return
+
+      if (this.loading2) return
+
+      this.loading2 = true
+
+      this.$axios.get('https://api.scryfall.com/cards/autocomplete?q='+ val)
+        .then(response => {
+          this.entries = response.data.data
+        })
+        .catch(err => {console.log(err)})
+        .finally(() => (this.loading2 = false))
+
+    }
   },
   methods: {
     reset() {
       this.$store.dispatch('reset')
     },
   },
-  created () {
-    // this.$store.dispatch('init')
-  }
 };
 </script>
