@@ -10,22 +10,44 @@
         :key="i"
       >
         <v-card>
-          <v-card-title>{{player.name}}</v-card-title>
+          <v-card-title>{{player.name}} {{ counters[player.id][0] }} {{counters[player.id][1]}}</v-card-title>
           <v-row no-gutters>
-            <v-col cols="4">
+            <v-col cols="4" class="ma-auto">
               <card :carduri="player.cardURI"></card>
             </v-col>
-            <v-col cols="8">
-              <v-card-text>
-                <v-list>
-                  <v-list-item v-for="(counter, j) in counters[player.id]" :key="counterList[j]">
-                    <v-list-item-content>{{counterList[j]}}: {{counter}}</v-list-item-content>
-                  </v-list-item>
-                  <v-list-item v-for="(player2, k) in players" :key="k">
-                    <v-list-item-content>{{player2.name + ": " + cmdrDmgs[player2.id][player.id]}}</v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </v-card-text>
+            <v-col cols="12">
+              <v-list dense>
+                <v-container>
+                <v-row no-gutters>
+                  <v-col cols="auto">
+
+                <v-list-item>
+                  <v-list-item-icon class="mr-2"><v-icon>mdi-alert-circle</v-icon></v-list-item-icon>
+                  <v-list-item-content>: {{counters[player.id][2]}}</v-list-item-content>
+                </v-list-item>
+                  </v-col>
+                  <v-col cols="auto">
+                <v-list-item>
+                  <v-list-item-icon class="mr-2"><v-icon>mdi-flash</v-icon></v-list-item-icon>
+                  <v-list-item-content>: {{counters[player.id][3]}}</v-list-item-content>
+                </v-list-item>
+                  </v-col>
+                  <v-col cols="auto">
+                <v-list-item>
+                  <v-list-item-icon class="mr-2"><v-icon>mdi-emoticon-dead</v-icon></v-list-item-icon>
+                  <v-list-item-content>: {{counters[player.id][4]}}</v-list-item-content>
+                </v-list-item>
+                  </v-col>
+                </v-row>
+                </v-container>
+              </v-list>
+            </v-col>
+            <v-col>
+              <v-list>
+                <v-list-item v-for="(player2, k) in players" :key="k">
+                  <v-list-item-content>{{player2.name + ": " + cmdrDmgs[player2.id][player.id]}}</v-list-item-content>
+                </v-list-item>
+              </v-list>
             </v-col>
           </v-row>
         </v-card>
@@ -44,19 +66,6 @@ export default {
     'players', 'counterList', 'counters', 'cmdrDmgs', 
   ]),
   // computed: {
-
-  //   counterList() {
-  //     return this.$store.state.counterList;
-  //   },
-  //   counters() {
-  //     return this.$store.state.counters;
-  //   },
-  //   cmdrDmgs() {
-  //     return this.$store.state.cmdrDmgs;
-  //   },
-  //   players() {
-  //     return this.$store.state.players;
-  //   }
   // },
   components: {
     card

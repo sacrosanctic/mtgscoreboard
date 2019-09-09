@@ -158,17 +158,6 @@ export default new Vuex.Store({
         db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/'+ i + '/' + playerId)
           .remove()
       }
-    // removePlayer(state) {
-    //   state.players.pop()
-    //   state.cmdrDmg.pop()
-    //   for(var item of state.cmdrDmg) {
-    //     item.pop()
-    //   }
-    // },
-
-    // removePlayer({ commit }) {
-    //   commit('removePlayer')
-    // }
     }), 
   },
   getters: {
