@@ -21,7 +21,10 @@
       </v-toolbar-items>
 
       <v-spacer></v-spacer>
-      <v-autocomplete
+      <v-autocomplete @input="cardLookUp"
+        name="searchbar"
+        v-model="currentCard"
+        auto-select-first
         :items="items"
         :search-input.sync="search"
         class="ax-4"
@@ -31,18 +34,18 @@
         label="Card Name"
         solo
         hide-no-data
-        cache-items
-        :loading="loading2"
       ></v-autocomplete>
 <!-- 
+        :loading="loading2"
         v-model="select"
+        cache-items
 
 
  -->
 
       <v-toolbar-items>
         <v-btn class="primary--text" text @click="reset()">Reset</v-btn>
-        <v-btn class="primary--text" text @click="dialog=true">Invite</v-btn>
+        <v-btn class="primary--text" text @click.stop="dialog=true">Invite</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -59,16 +62,6 @@
       v-model="dialog"
       width="500"
     >
-      <template v-slot:activator="{ on }">
-        <!-- <v-btn
-          color="red lighten-2"
-          dark
-          v-on="on"
-        >
-          Click Me
-        </v-btn> -->
-      </template>
-
       <v-card>
         <v-card-title
           class="headline grey lighten-2"
@@ -76,10 +69,12 @@
         >
           QR CODE
         </v-card-title>
-        <v-img
+        <!-- <v-img
          height="500px"
          src=".\assets\qr-code1000.png"
-        ></v-img>
+        ></v-img> -->
+
+        <card :carduri="currentCard"></card>
 
         <v-card-actions>
           <div class="flex-grow-1"></div>
@@ -105,6 +100,8 @@
 </template>
 
 <script>
+import card from "@/components/card.vue";
+
 export default {
   name: "App",
   data: () => ({
@@ -113,6 +110,7 @@ export default {
     entries: [],
     loading2: false,
     search: null,
+    currentCard: null,
   }),
   computed: {
     items () {
@@ -133,7 +131,7 @@ export default {
         .then(response => {
           this.entries = response.data.data
         })
-        .catch(err => {console.log(err)})
+        // .catch(err => {console.log(err)})
         .finally(() => (this.loading2 = false))
 
     }
@@ -142,6 +140,12 @@ export default {
     reset() {
       this.$store.dispatch('reset')
     },
+    cardLookUp() {
+      this.dialog = true
+    }
   },
+  components: {
+    card
+  }
 };
 </script>

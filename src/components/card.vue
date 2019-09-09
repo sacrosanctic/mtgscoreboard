@@ -20,7 +20,7 @@ export default {
       carduri: String,
     },
     mounted () {
-      this.$axios.get(this.carduri)
+      this.$axios.get("https://api.scryfall.com/cards/named?exact=" + encodeURI(this.carduri))
         .then(
           response => {
             this.img = response.data.image_uris.large

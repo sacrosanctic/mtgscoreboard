@@ -24,12 +24,12 @@ export default new Vuex.Store({
       {
         id: 0,
         name: 'player1',
-        cardURI: 'https://api.scryfall.com/cards/b9d895af-7e8c-419f-bc5d-5596083fbfb6',
+        cardURI: 'Muldrotha, the Gravetide',
       },
       {
         id: 1,
         name: 'player2',
-        cardURI: 'https://api.scryfall.com/cards/c654737d-34ac-42ff-ae27-3a3bbb930fc1',
+        cardURI: 'Karn\'s Bastion',
       }
     ],
     counters: [
@@ -92,12 +92,12 @@ export default new Vuex.Store({
         {
           id: 0,
           name: 'player1',
-          cardURI: 'https://api.scryfall.com/cards/b9d895af-7e8c-419f-bc5d-5596083fbfb6',
+          cardURI: 'Muldrotha, the Gravetide',
         },
         {
           id: 1,
           name: 'player2',
-          cardURI: 'https://api.scryfall.com/cards/c654737d-34ac-42ff-ae27-3a3bbb930fc1',
+          cardURI: 'Karn\'s Bastion',
         }
       ]
       const counters = [
