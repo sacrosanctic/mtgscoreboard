@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="!loading">
     <v-row>
       <v-col 
         cols="12" 
@@ -63,7 +63,7 @@ import { mapState } from 'vuex'
 export default {
   data: () => ({}),
   computed: mapState([
-    'players', 'counterList', 'counters', 'cmdrDmgs', 
+    'players', 'counterList', 'counters', 'cmdrDmgs', 'loading', 
   ]),
   // computed: {
   // },

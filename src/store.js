@@ -54,11 +54,14 @@ export default new Vuex.Store({
   },
   actions: {
     init: firebaseAction(function(context) {
+      
       context.commit('setLoading',true)
-      context.bindFirebaseRef('counters', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters'))
-      context.bindFirebaseRef('players', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players'))
-      context.bindFirebaseRef('cmdrDmgs', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs'))
-      context.commit('setLoading',false)
+      const p1 = context.bindFirebaseRef('counters', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters'))
+      const p2 = context.bindFirebaseRef('players', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players'))
+      const p3 = context.bindFirebaseRef('cmdrDmgs', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs'))
+      Promise.all([p1, p2, p3]).then(() => {
+        context.commit('setLoading',false)
+      })
     }),
     setCmdrDmg: firebaseAction((_, payload) => {
       return db
@@ -76,7 +79,7 @@ export default new Vuex.Store({
         })
         .catch(() => {})
     }),
-    setCounter: firebaseAction((_, payload) => {
+    setCounter: firebaseAction((context, payload) => {
       return db
         .ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/' + payload.player + '/' + payload.type)
         .transaction(value => {

@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-row v-if="!$store.state.loading">
+  <v-container v-if="!loading">
+    <v-row>
       <v-col>
         <v-btn @click="addPlayer">add player</v-btn>
         <v-btn @click="removePlayer">remove player</v-btn>
@@ -119,7 +119,7 @@ export default {
     },
   },
   computed: mapState([
-    'players', 'counterList', 'counters', 'cmdrDmgs', 
+    'players', 'counterList', 'counters', 'cmdrDmgs', 'loading'
   ]),
   // computed: {
   //   counterList() {
