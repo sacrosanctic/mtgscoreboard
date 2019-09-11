@@ -10,10 +10,14 @@
         :key="i"
       >
         <v-card>
-          <v-card-title>{{player.name}} {{ counters[player.id][0] }} {{counters[player.id][1]}}</v-card-title>
+          <v-card-title>{{player.name}} {{counters[player.id][0]}}
+            
+            {{cmdrCastMod(player.manaCost,counters[player.id][1])}}
+
+             ({{counters[player.id][1]}})</v-card-title>
           <v-row no-gutters>
             <v-col cols="4" class="ma-auto">
-              <card :carduri="player.cardURI"></card>
+              <card :cardname="player.cardName"></card>
             </v-col>
             <v-col cols="12">
               <v-list dense>
@@ -62,11 +66,29 @@ import { mapState } from 'vuex'
 
 export default {
   data: () => ({}),
-  computed: mapState([
-    'players', 'counterList', 'counters', 'cmdrDmgs', 'loading', 
-  ]),
-  // computed: {
-  // },
+    computed: {
+      ...mapState([
+      'players', 'counterList', 'counters', 'cmdrDmgs', 'loading', 
+    ]),
+  },
+  methods: {
+    cmdrCastMod(manaCost,cast) {
+      let regex = /{(\d+)}/g
+      if(manaCost.search(regex) >= 0) {
+        return manaCost.replace(/{(\d+)}/g,function(match,p1) {
+          return '{' + (Number(p1) + cast * 2) + '}'
+        })
+      } else {
+        if(cast==0) return manaCost
+        return '{' + (cast * 2) + '}' + manaCost
+      }
+    },
+    cardLookUp() {
+      // axios.get('https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature')
+      //   .then(response => {
+
+    }
+  },
   components: {
     card
   }

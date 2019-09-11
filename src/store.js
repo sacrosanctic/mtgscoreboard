@@ -92,12 +92,16 @@ export default new Vuex.Store({
         {
           id: 0,
           name: 'player1',
+          cardName: 'Muldrotha, the Gravetide',
           cardURI: 'Muldrotha, the Gravetide',
+          manaCost: '{3}{B}{G}{U}'
         },
         {
           id: 1,
           name: 'player2',
+          cardName: 'Karn\'s Bastion',
           cardURI: 'Karn\'s Bastion',
+          manaCost: '{10}'
         }
       ]
       const counters = [
@@ -118,15 +122,16 @@ export default new Vuex.Store({
     }),
     addPlayer: firebaseAction(({ state }) => {
       var newPlayerId = state.players.length
-      var cardURI = ''
       axios.get('https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature')
-        .then(response => {
-          cardURI = response.data.uri
+        .then(res => {
+          res = res.data
 
           const newPlayer = {
             id: newPlayerId,
             name: 'player' + (newPlayerId+1),
-            cardURI: cardURI
+            cardURI: res.uri,
+            cardName:res.name,
+            manaCost:res.mana_cost,
             // cardURI: 'https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature'
           }
 

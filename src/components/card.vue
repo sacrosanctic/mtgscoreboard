@@ -17,10 +17,10 @@ export default {
       img: ''
     }),
     props: {
-      carduri: String,
+      cardname: String,
     },
     mounted () {
-      this.$axios.get("https://api.scryfall.com/cards/named?exact=" + encodeURI(this.carduri))
+      this.$axios.get("https://api.scryfall.com/cards/named?exact=" + encodeURI(this.cardname))
         .then(
           response => {
             this.img = response.data.image_uris.large
