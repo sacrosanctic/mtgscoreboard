@@ -3,7 +3,9 @@
     <v-row>
         <v-col>
             <v-img
+              :height="height"
               :src="img"
+              contain
             ></v-img>
         </v-col>
     </v-row>
@@ -18,6 +20,7 @@ export default {
     }),
     props: {
       cardname: String,
+      height: String,
     },
     mounted () {
       this.$axios.get("https://api.scryfall.com/cards/named?exact=" + encodeURI(this.cardname))

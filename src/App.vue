@@ -45,7 +45,7 @@
 
       <v-toolbar-items>
         <v-btn class="primary--text" text @click="reset()">Reset</v-btn>
-        <v-btn class="primary--text" text @click.stop="dialog=true">Invite</v-btn>
+        <v-btn class="primary--text" text @click.stop="dialogQR=true">Invite</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -59,7 +59,7 @@
 
   <div class="text-center">
     <v-dialog
-      v-model="dialog"
+      v-model="dialogQR"
       width="500"
     >
       <v-card>
@@ -69,13 +69,10 @@
         >
           QR CODE
         </v-card-title>
-        <!-- <v-img
+        <v-img
          height="500px"
          src=".\assets\qr-code1000.png"
-        ></v-img> -->
-
-        <card :carduri="currentCard"></card>
-
+        ></v-img>
         <v-card-actions>
           <div class="flex-grow-1"></div>
           <v-btn
@@ -89,18 +86,29 @@
       </v-card>
     </v-dialog>
   </div>
-
-
-        </v-content>
+      <v-dialog
+        v-model="dialog"
+        width="unset"
+        fullscreen
+        @keydown.space="dialog = false"
+        ref="dialog"
+      >
+        <v-card dark>
+          <v-img
+            contain
+            height="100vh"
+            :src="currentCardImg"
+          ></v-img>
+        </v-card>
+      </v-dialog>
+    </v-content>
     <v-footer app>
-      <!-- -->
     </v-footer>
-
   </v-app>
 </template>
 
 <script>
-import card from "@/components/card.vue";
+// import card from "@/components/card.vue";
 
 export default {
   name: "App",
@@ -111,6 +119,8 @@ export default {
     loading2: false,
     search: null,
     currentCard: null,
+    currentCardImg: null,
+    dialogQR: false,
   }),
   computed: {
     items () {
@@ -122,17 +132,16 @@ export default {
   watch: {
     search (val) {
        // if(this.items.length > 0) return
-
       if (this.loading2) return
-
       this.loading2 = true
-
       this.$axios.get('https://api.scryfall.com/cards/autocomplete?q='+ val)
         .then(response => {
           this.entries = response.data.data
         })
         // .catch(err => {console.log(err)})
-        .finally(() => (this.loading2 = false))
+        .finally(() => {
+          this.loading2 = false
+        })
 
     }
   },
@@ -141,11 +150,15 @@ export default {
       this.$store.dispatch('reset')
     },
     cardLookUp() {
-      this.dialog = true
+      this.$axios.get('https://api.scryfall.com/cards/named?exact=' + this.currentCard)
+        .then(response => {
+          this.currentCardImg = response.data.image_uris.large
+          this.dialog = true
+        })
     }
   },
   components: {
-    card
+    // card
   }
 };
 </script>
