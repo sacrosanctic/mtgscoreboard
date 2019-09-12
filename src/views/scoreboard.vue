@@ -3,15 +3,17 @@
     <v-row>
       <v-col 
         cols="12" 
-        sm="6" 
+        sm="3" 
         lg="3" 
         xl="2" 
         v-for="(player, i) in players" 
         :key="i"
       >
         <v-card>
-          <v-card-title>{{player.name}} {{counters[player.id][0]}}
-            
+          <v-card-title>
+            {{player.name}}
+            {{counters[player.id][0]}}
+            <v-spacer></v-spacer>
             {{cmdrCastMod(player.manaCost,counters[player.id][1])}}
 
              ({{counters[player.id][1]}})</v-card-title>
@@ -24,7 +26,6 @@
                 <v-container>
                 <v-row no-gutters>
                   <v-col cols="auto">
-
                 <v-list-item>
                   <v-list-item-icon class="mr-2"><v-icon>mdi-alert-circle</v-icon></v-list-item-icon>
                   <v-list-item-content>: {{counters[player.id][2]}}</v-list-item-content>
@@ -84,9 +85,9 @@ export default {
       }
     },
     cardLookUp() {
-      // axios.get('https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature')
+      // this.$axios.get('https://api.scryfall.com/cards/named?exact=' + this.currentCard)
       //   .then(response => {
-
+      //     this.currentCardImg = response.data.image_uris.large
     }
   },
   components: {

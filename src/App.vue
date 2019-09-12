@@ -142,7 +142,6 @@ export default {
         .finally(() => {
           this.loading2 = false
         })
-
     }
   },
   methods: {
