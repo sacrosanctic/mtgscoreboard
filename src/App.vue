@@ -128,6 +128,11 @@ export default {
     }
   },
   mounted () {
+    window.addEventListener('keydown', e => {
+      if(e.key == 'Escape' || e.key == ' ') {
+        this.dialog = false;
+      }
+    })
   },
   watch: {
     search (val) {

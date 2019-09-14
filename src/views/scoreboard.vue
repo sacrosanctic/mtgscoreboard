@@ -11,12 +11,20 @@
       >
         <v-card>
           <v-card-title>
-            {{player.name}}
-            {{counters[player.id][0]}}
+            <div style="font-size:2em">
+              {{counters[player.id][0]}}
+            </div>
             <v-spacer></v-spacer>
-            {{cmdrCastMod(player.manaCost,counters[player.id][1])}}
+            <div style="font-size:.65em">
+              {{cmdrCastMod(player.manaCost,counters[player.id][1])}}
+              ({{counters[player.id][1]}})
+            </div>
+          </v-card-title>
+          <v-card-text>
+            {{player.name}}
 
-             ({{counters[player.id][1]}})</v-card-title>
+          </v-card-text>
+
           <v-row no-gutters>
             <v-col cols="4" class="ma-auto">
               <card :cardname="player.cardName"></card>
