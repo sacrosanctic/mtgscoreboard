@@ -22,6 +22,7 @@
 
       <v-spacer></v-spacer>
       <v-autocomplete @input="cardLookUp"
+        @focus="currentCard=''"
         name="searchbar"
         v-model="currentCard"
         auto-select-first
@@ -30,9 +31,11 @@
         class="ax-4 primary--text"
         flat
         hide-details
+        filled
         label="Card Name"
         solo
         hide-no-data
+        ref="autocomplete"
       ></v-autocomplete>
 <!-- 
         :loading="loading2"
@@ -130,6 +133,12 @@ export default {
     window.addEventListener('keydown', e => {
       if(e.key == 'Escape' || e.key == ' ') {
         this.dialog = false;
+      }
+    }),
+    window.addEventListener('keydown', e => {
+      if(e.ctrlKey && e.key == ' ') {
+        this.$refs.autocomplete.focus()
+        this.currentCard = ''
       }
     })
   },
