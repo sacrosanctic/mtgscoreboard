@@ -79,6 +79,10 @@ export default new Vuex.Store({
         })
         .catch(() => {})
     }),
+    setPlayer: firebaseAction((context, payload) => {
+      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players/'+ payload.playerId + '/name')
+        .set(payload.value)
+    }),
     setCommander: firebaseAction((context, payload) => {
       axios.get('https://api.scryfall.com/cards/named?fuzzy=' + encodeURI(payload.value))
       .then(res => {
@@ -91,9 +95,6 @@ export default new Vuex.Store({
         }
         db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players/'+ payload.playerId)
           .update(newCard)
-          .then(()=>{
-            return res.name
-          })
       })
     }),
     setCounter: firebaseAction((context, payload) => {

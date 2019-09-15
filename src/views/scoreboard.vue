@@ -27,6 +27,7 @@
 
           <v-row no-gutters>
             <v-col cols="4" class="ma-auto">
+              <!-- <v-img :src=""></v-img> -->
               <card :cardname="player.cardName"></card>
             </v-col>
             <v-col cols="12">

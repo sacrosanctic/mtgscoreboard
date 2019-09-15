@@ -33,33 +33,39 @@
             @click="toggleEdit(commander)"
           >{{ players[currentPlayerId].cardName }}
           </v-card-title>
-          <v-card-text>
+          <v-card-text
+            v-show="commander.edit"
+          >
           <v-text-field
             ref="commander"
-            v-show="commander.edit"
             hint="Commander"
             :value="players[currentPlayerId].cardName"
             v-model="commander.val"
             @focus="$event.target.select()"
             @blur="saveEdit(commander)"
-
+            @keydown.enter="saveEdit(commander)"
           >
-<v-icon>mdi-pencil</v-icon>
           </v-text-field>
           </v-card-text>
-
-
-          <v-hover
-            v-slot:default="{ hover }"
+          <v-card-text
+            v-show="!player.edit"
+            @click="togglePlayer(player)"
+          >{{ players[currentPlayerId].name }}
+          </v-card-text>
+          <v-card-text
+            v-show="player.edit"
           >
-            <v-card-text > {{ players[currentPlayerId].name }}
-            <v-text-field
-              hint="Player"
-              :value="players[currentPlayerId].name"
-            ></v-text-field>
-          <v-icon v-if="hover" size="16" @click="edit('name')">mdi-pencil</v-icon>
-            </v-card-text>
-          </v-hover>
+          <v-text-field
+            ref="player"
+            hint="Player Name"
+            :value="players[currentPlayerId].name"
+            v-model="player.val"
+            @focus="$event.target.select()"
+            @blur="savePlayer(player)"
+            @keydown.enter="savePlayer(player)"
+          >
+          </v-text-field>
+          </v-card-text>
 
           <v-list dense>
             <v-list-item-group class="primary--text" v-model="listValue">
@@ -88,7 +94,7 @@
             <v-list-item-group class="primary--text" v-model="listValue">
               <v-container>
                 <v-row>
-         size="1"          <v-col cols="6"
+                  <v-col cols="6"
                     v-for="player in players"
                     :key="player.id"
                   >
@@ -120,33 +126,49 @@ export default {
     currentCounter: 0,
     listValue: null,
     test: {},
+    player: {
+      val: '',
+      edit: false,
+    },
     commander: {
       val: '',
-      edit: false
+      edit: false,
     },
   }),
   methods: {
+    togglePlayer(value) {
+      value.edit = !value.edit
+      this.player.val = this.players[this.currentPlayerId].name
+      if(value.edit) {
+        this.$nextTick(()=>{
+          this.$refs.player.focus()
+        })
+      }
+    },
+    savePlayer(value) {
+      value.edit = false
+      const obj = {
+        value: this.player.val,
+        playerId: this.currentPlayerId,
+      }
+      this.$store.dispatch('setPlayer', obj)
+    },
     toggleEdit(value) {
       value.edit = !value.edit
       if(value.edit) {
+          this.commander.val = this.players[this.currentPlayerId].cardName
         this.$nextTick(()=>{
           this.$refs.commander.focus()
         })
       }
     },
     saveEdit(value) {
-      this.toggleEdit(value)
-
+      value.edit = false
       const obj = {
         value: this.commander.val,
         playerId: this.currentPlayerId,
       }
-
       this.$store.dispatch('setCommander', obj)
-        .then(()=>{
-          this.commander.val = this.players[this.currentPlayerId].cardName
-        })
-
     },
     setCurrentPlayer(id) {
       this.currentPlayerId = id
@@ -177,9 +199,11 @@ export default {
       }
     },
   },
-  computed: mapState([
-    'players', 'counterList', 'counters', 'cmdrDmgs', 'loading'
-  ]),
+  computed: {
+    ...mapState([
+      'players', 'counterList', 'counters', 'cmdrDmgs', 'loading'
+    ]),
+  },
   components: {
     // card
   },
