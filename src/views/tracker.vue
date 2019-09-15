@@ -29,7 +29,7 @@
         <v-card>
           <v-card-title> {{ players[currentPlayerId].name }}</v-card-title>
           <v-list dense>
-            <v-list-item-group color="red" v-model="listValue">
+            <v-list-item-group class="primary--text" v-model="listValue">
               <v-list-item
                 v-for="(counter, i) in counters[currentPlayerId]"
                 :key="i"
@@ -52,7 +52,7 @@
                 <v-btn @click="setValue(+5)">+5</v-btn>
           </v-card-actions>
           <v-list dense>
-            <v-list-item-group color="red" v-model="listValue">
+            <v-list-item-group class="primary--text" v-model="listValue">
               <v-container>
                 <v-row>
                   <v-col cols="6"

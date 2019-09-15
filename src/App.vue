@@ -27,8 +27,7 @@
         auto-select-first
         :items="items"
         :search-input.sync="search"
-        class="ax-4"
-        color="blue"
+        class="ax-4 primary--text"
         flat
         hide-details
         label="Card Name"
