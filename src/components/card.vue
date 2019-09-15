@@ -1,37 +1,35 @@
 <template>
-<v-container>
-    <v-row>
-        <v-col>
-            <v-img
-              :height="height"
-              :src="img"
-              contain
-            ></v-img>
-        </v-col>
-    </v-row>
-    </v-container>    
+  <v-img
+    :src="img"
+    contain
+  ></v-img>
 </template>
 
 <script>
-
 export default {
-    data: () => ({
-      img: ''
-    }),
-    props: {
-      cardname: String,
-      height: String,
-    },
-    mounted () {
-      this.$axios.get("https://api.scryfall.com/cards/named?exact=" + encodeURI(this.cardname))
-        .then(
-          response => {
-            this.img = response.data.image_uris.large
-        })
-        .catch(error => {
-          error
-        })
-        .finally(()=>{})
+  data: () => ({
+    img: ''
+  }),
+  props: {
+    cardName: String,
+  },
+  watch: {
+    cardName() {
+      this.getArt()
     }
+  },
+  methods: {
+    getArt() {
+    this.$axios.get("https://api.scryfall.com/cards/named?exact=" + encodeURI(this.cardName))
+      .then(
+        response => {
+          this.img = response.data.image_uris.art_crop
+          // this.img = response.data.image_uris.large
+      })
+    }
+  },
+  mounted () {
+    this.getArt()
+  }
 }
 </script>

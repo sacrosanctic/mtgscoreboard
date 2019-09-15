@@ -26,9 +26,10 @@
           </v-card-text>
 
           <v-row no-gutters>
-            <v-col cols="4" class="ma-auto">
-              <!-- <v-img :src=""></v-img> -->
-              <card :cardname="player.cardName"></card>
+            <v-col cols="12" class="ma-auto">
+              <div class="container">
+              <card :cardName="player.cardName"></card>
+              </div>
             </v-col>
             <v-col cols="12">
               <v-list dense>
@@ -75,13 +76,24 @@ import card from "@/components/card.vue";
 import { mapState } from 'vuex'
 
 export default {
-  data: () => ({}),
+  data: () => ({
+  }),
     computed: {
       ...mapState([
       'players', 'counterList', 'counters', 'cmdrDmgs', 'loading', 
     ]),
   },
+  watch: {
+  },
   methods: {
+    getArt(cardName) {
+      var art = ''
+      this.$axios.get("https://api.scryfall.com/cards/named?exact=" + encodeURI(cardName))
+        .then(response=>{
+          return response.data.image_uris.art_crop
+        })
+      return art
+    },
     cmdrCastMod(manaCost,cast) {
       let regex = /{(\d+)}/g
       if(manaCost.search(regex) >= 0) {
@@ -104,3 +116,15 @@ export default {
   }
 };
 </script>
+
+<style>
+/*
+.container {
+  position: relative;
+}
+#clip {
+  position: abosolute;
+  /* clip-path: inset(0px 0px 100px 0px); 
+}
+*/
+</style>
