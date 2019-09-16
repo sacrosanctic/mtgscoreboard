@@ -46,7 +46,27 @@
  -->
 
       <v-toolbar-items>
-        <v-btn class="primary--text" text @click="reset()">Reset</v-btn>
+        <v-menu bottom offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn 
+              v-on="on"
+              class="primary--text"
+              text
+            >
+              Reset
+            </v-btn>
+          </template>
+
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in resetBtn"
+            :key="index"
+            @click="reset(item.type)"
+          >
+            <v-list-item-title class="primary--text">{{ item.value }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+        </v-menu>
         <v-btn class="primary--text" text @click.stop="dialogQR=true">Invite</v-btn>
       </v-toolbar-items>
     </v-app-bar>
@@ -123,6 +143,16 @@ export default {
     currentCard: null,
     currentCardImg: null,
     dialogQR: false,
+    resetBtn: [
+      { 
+        value: 'Life',
+        type: 'life',
+      },
+      { 
+        value: 'All',
+        type: 'all',
+      },
+    ],
   }),
   computed: {
     items () {
@@ -158,8 +188,9 @@ export default {
     }
   },
   methods: {
-    reset() {
-      this.$store.dispatch('reset')
+    reset(val) {
+      if(val == 'all') this.$store.dispatch('reset')
+      else if (val == 'life') this.$store.dispatch('resetLife')
     },
     cardLookUp() {
       this.$axios.get('https://api.scryfall.com/cards/named?exact=' + this.currentCard)

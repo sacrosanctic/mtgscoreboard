@@ -105,26 +105,9 @@ export default {
         return '{' + (cast * 2) + '}' + manaCost
       }
     },
-    cardLookUp() {
-      // this.$axios.get('https://api.scryfall.com/cards/named?exact=' + this.currentCard)
-      //   .then(response => {
-      //     this.currentCardImg = response.data.image_uris.large
-    }
   },
   components: {
     card
   }
 };
 </script>
-
-<style>
-/*
-.container {
-  position: relative;
-}
-#clip {
-  position: abosolute;
-  /* clip-path: inset(0px 0px 100px 0px); 
-}
-*/
-</style>

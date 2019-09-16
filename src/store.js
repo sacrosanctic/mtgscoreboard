@@ -105,6 +105,16 @@ export default new Vuex.Store({
         })
         .catch(() => {})
     }),
+    resetLife: firebaseAction((context) => {
+      //do it later
+      let numPlayers = context.state.players.length
+      const cmdrDmgs = Array(numPlayers).fill(0).map(() => Array(numPlayers).fill(0))
+      const counters = Array(numPlayers).fill(0).map(()=>Array(5).fill(40).fill(0,1))
+      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/')
+        .set(counters)
+      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/')
+        .set(cmdrDmgs)
+    }),
     reset: firebaseAction(() => {
       const players = [
         {
