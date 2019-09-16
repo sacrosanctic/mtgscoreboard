@@ -1,18 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import VuexPersistence from 'vuex-persist'
 import { db } from '@/db.js'
 import { vuexfireMutations, firebaseAction } from 'vuexfire'
 import axios from 'axios'
-
-// const vuexLocal = new VuexPersistence({
-//   storage: window.localStorage
-// })
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    settings: {
+      startingLife: 40,
+      currBoard: 'scoreboard/-Lne7_VJOBzY4Q9e4Eep/',
+    },
     counterList: [
       'life',
       'cmdr',
@@ -33,12 +32,12 @@ export default new Vuex.Store({
       }
     ],
     counters: [
-      [0,0,0,0,0],
-      [0,0,0,0,0]
+      [40,0,0,0,0],
+      [40,0,0,0,0]
     ],
     cmdrDmgs: [
-      [1,2],
-      [3,4]
+      [0,0],
+      [0,0]
     ],
     status: null,
     loading: false
@@ -63,7 +62,7 @@ export default new Vuex.Store({
         context.commit('setLoading',false)
       })
     }),
-    setCmdrDmg: firebaseAction((_, payload) => {
+    setCmdrDmg: firebaseAction((context, payload) => {
       return db
         .ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/' + payload.player + '/' + payload.type)
         .transaction(value => {
@@ -107,15 +106,16 @@ export default new Vuex.Store({
     }),
     resetLife: firebaseAction((context) => {
       //do it later
-      let numPlayers = context.state.players.length
-      const cmdrDmgs = Array(numPlayers).fill(0).map(() => Array(numPlayers).fill(0))
-      const counters = Array(numPlayers).fill(0).map(()=>Array(5).fill(40).fill(0,1))
+      let numOfPlayers = context.state.players.length
+      let startingLife = context.state.settings.startingLife
+      const cmdrDmgs = Array(numOfPlayers).fill(0).map(()=>Array(numOfPlayers).fill(0))
+      const counters = Array(numOfPlayers).fill(0).map(()=>Array(5).fill(startingLife).fill(0,1))
       db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/')
         .set(counters)
       db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/')
         .set(cmdrDmgs)
     }),
-    reset: firebaseAction(() => {
+    reset: firebaseAction((context) => {
       const players = [
         {
           id: 0,
@@ -148,8 +148,8 @@ export default new Vuex.Store({
           .set(cmdrDmgs)
 
     }),
-    addPlayer: firebaseAction(({ state }) => {
-      var newPlayerId = state.players.length
+    addPlayer: firebaseAction(( context ) => {
+      var newPlayerId = context.state.players.length
       axios.get('https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature')
         .then(res => {
           res = res.data
@@ -178,11 +178,11 @@ export default new Vuex.Store({
           .set(arr)
 
           db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/'+ newPlayerId)
-          .set([40,0,0,0,0])
+          .set([context.store.settings.startingLife,0,0,0,0])
         })
     }),
-    removePlayer: firebaseAction(({ state }) => {
-      var playerId = state.players.length - 1
+    removePlayer: firebaseAction(( context ) => {
+      var playerId = context.state.players.length - 1
       db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players/' + playerId)
         .remove()
       db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/' + playerId)
