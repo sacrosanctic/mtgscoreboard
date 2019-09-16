@@ -55,22 +55,22 @@ export default new Vuex.Store({
     init: firebaseAction(function(context) {
       
       context.commit('setLoading',true)
-      const p1 = context.bindFirebaseRef('counters', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters'))
-      const p2 = context.bindFirebaseRef('players', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players'))
-      const p3 = context.bindFirebaseRef('cmdrDmgs', db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs'))
+      const p1 = context.bindFirebaseRef('counters', db.ref(context.state.settings.currBoard + 'counters'))
+      const p2 = context.bindFirebaseRef('players', db.ref(context.state.settings.currBoard + 'players'))
+      const p3 = context.bindFirebaseRef('cmdrDmgs', db.ref(context.state.settings.currBoard + 'cmdrDmgs'))
       Promise.all([p1, p2, p3]).then(() => {
         context.commit('setLoading',false)
       })
     }),
     setCmdrDmg: firebaseAction((context, payload) => {
       return db
-        .ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/' + payload.player + '/' + payload.type)
+        .ref(context.state.settings.currBoard + 'cmdrDmgs/' + payload.player + '/' + payload.type)
         .transaction(value => {
           return value + payload.amount
         })
         .then(() => {
           db
-            .ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/'+ payload.type + '/0')
+            .ref(context.state.settings.currBoard + 'counters/'+ payload.type + '/0')
             .transaction(value => {
               return value - payload.amount
             })
@@ -79,7 +79,7 @@ export default new Vuex.Store({
         .catch(() => {})
     }),
     setPlayer: firebaseAction((context, payload) => {
-      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players/'+ payload.playerId + '/name')
+      db.ref(context.state.settings.currBoard + 'players/'+ payload.playerId + '/name')
         .set(payload.value)
     }),
     setCommander: firebaseAction((context, payload) => {
@@ -92,13 +92,13 @@ export default new Vuex.Store({
           cardName:res.name,
           manaCost:res.mana_cost,
         }
-        db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players/'+ payload.playerId)
+        db.ref(context.state.settings.currBoard + 'players/'+ payload.playerId)
           .update(newCard)
       })
     }),
     setCounter: firebaseAction((context, payload) => {
       return db
-        .ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/' + payload.player + '/' + payload.type)
+        .ref(context.state.settings.currBoard + 'counters/' + payload.player + '/' + payload.type)
         .transaction(value => {
           return value + payload.amount
         })
@@ -110,9 +110,9 @@ export default new Vuex.Store({
       let startingLife = context.state.settings.startingLife
       const cmdrDmgs = Array(numOfPlayers).fill(0).map(()=>Array(numOfPlayers).fill(0))
       const counters = Array(numOfPlayers).fill(0).map(()=>Array(5).fill(startingLife).fill(0,1))
-      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/')
+      db.ref(context.state.settings.currBoard + 'counters/')
         .set(counters)
-      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/')
+      db.ref(context.state.settings.currBoard + 'cmdrDmgs/')
         .set(cmdrDmgs)
     }),
     reset: firebaseAction((context) => {
@@ -140,11 +140,11 @@ export default new Vuex.Store({
         [0,0],
         [0,0]
       ]
-         db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players/')
+         db.ref(context.state.settings.currBoard + 'players/')
           .set(players)
-         db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/')
+         db.ref(context.state.settings.currBoard + 'counters/')
           .set(counters)
-         db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/')
+         db.ref(context.state.settings.currBoard + 'cmdrDmgs/')
           .set(cmdrDmgs)
 
     }),
@@ -163,35 +163,35 @@ export default new Vuex.Store({
             // cardURI: 'https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature'
           }
 
-          db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players/'+ newPlayerId)
+          db.ref(context.state.settings.currBoard + 'players/'+ newPlayerId)
             .set(newPlayer)
 
           for(let i=0;i<newPlayerId;i++) {
-            db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/'+ i + '/' + newPlayerId)
+            db.ref(context.state.settings.currBoard + 'cmdrDmgs/'+ i + '/' + newPlayerId)
               .set(0)
           }
           var arr = []
           for(let i=0;i<=newPlayerId;i++) {
             arr.push(0)
           }
-          db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/'+ newPlayerId)
+          db.ref(context.state.settings.currBoard + 'cmdrDmgs/'+ newPlayerId)
           .set(arr)
 
-          db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/'+ newPlayerId)
+          db.ref(context.state.settings.currBoard + 'counters/'+ newPlayerId)
           .set([context.store.settings.startingLife,0,0,0,0])
         })
     }),
     removePlayer: firebaseAction(( context ) => {
       var playerId = context.state.players.length - 1
-      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/players/' + playerId)
+      db.ref(context.state.settings.currBoard + 'players/' + playerId)
         .remove()
-      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/counters/' + playerId)
+      db.ref(context.state.settings.currBoard + 'counters/' + playerId)
         .remove()
-      db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/' + playerId)
+      db.ref(context.state.settings.currBoard + 'cmdrDmgs/' + playerId)
         .remove()
 
       for(let i=0;i<playerId;i++) {
-        db.ref('scoreboard/-Lne7_VJOBzY4Q9e4Eep/cmdrDmgs/'+ i + '/' + playerId)
+        db.ref(context.state.settings.currBoard + 'cmdrDmgs/'+ i + '/' + playerId)
           .remove()
       }
     }), 
