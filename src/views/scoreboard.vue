@@ -16,19 +16,13 @@
             </div>
             <v-spacer></v-spacer>
             <div style="font-size:.65em">
-              <!-- <div :is="test()"></div> -->
-              <!-- <div :is="cmdrCastMod(player.manaCost,counters[player.id][1])"></div> -->
-              <!-- {{cmdrCastMod(player.manaCost,counters[player.id][1])}} -->
-              <!-- <component :is="{template:cmdrCastMod(player.manaCost,counters[player.id][1])}"/> -->
-              {{cmdrCastMod(player.manaCost,counters[player.id][1])}}
-              ({{counters[player.id][1]}})
+              <component :is="{template:'<div>'+cmdrCastMod(player.manaCost,counters[player.id][1])+'</div>'}"/>
+              <!-- ({{counters[player.id][1]}}) -->
             </div>
           </v-card-title>
           <v-card-text>
             {{player.name}}
-
           </v-card-text>
-
           <v-row no-gutters>
             <v-col cols="12" class="ma-auto">
               <div class="container">
@@ -73,26 +67,27 @@
         </v-card>
       </v-col>
     </v-row>
-    <mtg-icon>energy</mtg-icon>
-    <mtg-icon>poison</mtg-icon>
-    <mtg-icon>W</mtg-icon>
-    <mtg-icon>U</mtg-icon>
-    <mtg-icon>B</mtg-icon>
-    <mtg-icon>R</mtg-icon>
-    <mtg-icon>G</mtg-icon>
-
   </v-container>
 </template>
 
 <script>
-import card from '@/components/card.vue'
-import mtgIcon from '@/assets/mtg_symbols/mtgIcon.vue'
 import { mapState } from 'vuex'
+import card from '@/components/card.vue'
+
+import mtgIcon from '@/components/mtg_symbols/mtgIcon.vue'
+import Vue from 'vue'
+Vue.component('mtg-icon',mtgIcon)
 
 export default {
   data: () => ({
   }),
     computed: {
+      test () {
+        return {
+          template: '<div><mtg-icon>B</mtg-icon></div>'
+          // template: '<div>asdf</div>'
+        }
+      },
       ...mapState([
       'players', 'counterList', 'counters', 'cmdrDmgs', 'loading', 
     ]),
@@ -108,32 +103,28 @@ export default {
         })
       return art
     },
-    test() {
-      return {
-        template: '<mtg-icon>B</mtg-icon>'
-      }
-    },
-    cmdrCastMod2(manaCost,cast) {
-      let regex = /{[wubrgWUBRG]}/g
-      if(manaCost.search(regex) >= 0) {
-        return manaCost.replace(/{([wubrgWUBRG])}/g,function(match,p1) {
-          return {template: "<mtg-icon>" + p1 + "</mtg-icon>"}
-        })
-      } else {
-        if(cast==0) return manaCost
-        return '{' + (cast * 2) + '}' + manaCost
-      }
-    },
+    // test() {
+    //   return {
+    //     // template: '<mtg-icon>B</mtg-icon>'
+    //     template: '<div>asdf</div>'
+    //   }
+    // },
     cmdrCastMod(manaCost,cast) {
       let regex = /{(\d+)}/g
       if(manaCost.search(regex) >= 0) {
-        return manaCost.replace(/{(\d+)}/g,function(match,p1) {
+        manaCost =  manaCost.replace(/{(\d+)}/g,function(match,p1) {
           return '{' + (Number(p1) + cast * 2) + '}'
         })
-      } else {
-        if(cast==0) return manaCost
-        return '{' + (cast * 2) + '}' + manaCost
+      } else if(cast!=0) {
+        manaCost = '{' + (cast * 2) + '}' + manaCost
       }
+      let regex2 = /{[wubrgWUBRG]}/g
+      if(manaCost.search(regex2) >= 0) {
+        manaCost = manaCost.replace(/{([wubrgWUBRG])}/g,function(match,p1) {
+          return "<mtg-icon>" + p1 + "</mtg-icon>"
+        })
+      }
+      return manaCost
     },
   },
   components: {

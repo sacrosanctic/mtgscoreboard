@@ -160,7 +160,6 @@ export default new Vuex.Store({
             cardURI: res.uri,
             cardName:res.name,
             manaCost:res.mana_cost,
-            // cardURI: 'https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature'
           }
 
           db.ref(context.state.settings.currBoard + 'players/'+ newPlayerId)
@@ -175,10 +174,10 @@ export default new Vuex.Store({
             arr.push(0)
           }
           db.ref(context.state.settings.currBoard + 'cmdrDmgs/'+ newPlayerId)
-          .set(arr)
+            .set(arr)
 
           db.ref(context.state.settings.currBoard + 'counters/'+ newPlayerId)
-          .set([context.store.settings.startingLife,0,0,0,0])
+            .set([context.state.settings.startingLife,0,0,0,0])
         })
     }),
     removePlayer: firebaseAction(( context ) => {
