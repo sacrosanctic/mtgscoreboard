@@ -16,6 +16,10 @@
             </div>
             <v-spacer></v-spacer>
             <div style="font-size:.65em">
+              <!-- <div :is="test()"></div> -->
+              <!-- <div :is="cmdrCastMod(player.manaCost,counters[player.id][1])"></div> -->
+              <!-- {{cmdrCastMod(player.manaCost,counters[player.id][1])}} -->
+              <!-- <component :is="{template:cmdrCastMod(player.manaCost,counters[player.id][1])}"/> -->
               {{cmdrCastMod(player.manaCost,counters[player.id][1])}}
               ({{counters[player.id][1]}})
             </div>
@@ -43,13 +47,14 @@
                   </v-col>
                   <v-col cols="auto">
                 <v-list-item>
-                  <v-list-item-icon class="mr-2"><v-icon>mdi-flash</v-icon></v-list-item-icon>
+                  <v-list-item-icon class="mr-2"><mtg-icon>energy</mtg-icon></v-list-item-icon>
+                  <!-- <v-list-item-icon class="mr-2"><v-icon>mdi-flash</v-icon></v-list-item-icon> -->
                   <v-list-item-content>: {{counters[player.id][3]}}</v-list-item-content>
                 </v-list-item>
                   </v-col>
                   <v-col cols="auto">
                 <v-list-item>
-                  <v-list-item-icon class="mr-2"><v-icon>mdi-emoticon-dead</v-icon></v-list-item-icon>
+                  <v-list-item-icon class="mr-2"><mtg-icon>poison</mtg-icon></v-list-item-icon>
                   <v-list-item-content>: {{counters[player.id][4]}}</v-list-item-content>
                 </v-list-item>
                   </v-col>
@@ -68,11 +73,20 @@
         </v-card>
       </v-col>
     </v-row>
+    <mtg-icon>energy</mtg-icon>
+    <mtg-icon>poison</mtg-icon>
+    <mtg-icon>W</mtg-icon>
+    <mtg-icon>U</mtg-icon>
+    <mtg-icon>B</mtg-icon>
+    <mtg-icon>R</mtg-icon>
+    <mtg-icon>G</mtg-icon>
+
   </v-container>
 </template>
 
 <script>
-import card from "@/components/card.vue";
+import card from '@/components/card.vue'
+import mtgIcon from '@/assets/mtg_symbols/mtgIcon.vue'
 import { mapState } from 'vuex'
 
 export default {
@@ -94,6 +108,22 @@ export default {
         })
       return art
     },
+    test() {
+      return {
+        template: '<mtg-icon>B</mtg-icon>'
+      }
+    },
+    cmdrCastMod2(manaCost,cast) {
+      let regex = /{[wubrgWUBRG]}/g
+      if(manaCost.search(regex) >= 0) {
+        return manaCost.replace(/{([wubrgWUBRG])}/g,function(match,p1) {
+          return {template: "<mtg-icon>" + p1 + "</mtg-icon>"}
+        })
+      } else {
+        if(cast==0) return manaCost
+        return '{' + (cast * 2) + '}' + manaCost
+      }
+    },
     cmdrCastMod(manaCost,cast) {
       let regex = /{(\d+)}/g
       if(manaCost.search(regex) >= 0) {
@@ -107,7 +137,8 @@ export default {
     },
   },
   components: {
-    card
+    card,
+    mtgIcon
   }
 };
 </script>

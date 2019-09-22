@@ -1,23 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1"
-	 id="svg4136" 
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#" 
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-   xmlns:svg="http://www.w3.org/2000/svg" 
-   sodipodi:docname="energy2.svg" 
-   inkscape:version="0.91 r13725" 
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" 
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-	 xmlns="http://www.w3.org/2000/svg" 
-   xmlns:xlink="http://www.w3.org/1999/xlink" 
-   x="0px" y="0px" width="480px" height="486.75px"
-	 viewBox="0 0 480 486.75" enable-background="new 0 0 480 486.75" xml:space="preserve">
-<sodipodi:namedview  id="namedview4138" inkscape:current-layer="svg4136" inkscape:window-maximized="1" inkscape:window-y="-8" inkscape:window-x="-8" inkscape:pageshadow="2" inkscape:pageopacity="0" inkscape:window-height="801" inkscape:window-width="1536" inkscape:cx="181.26755" inkscape:cy="243.375" objecttolerance="10" gridtolerance="10" guidetolerance="10" showgrid="false" inkscape:zoom="1.3025167" bordercolor="#666666" pagecolor="#ffffff" borderopacity="1">
-	</sodipodi:namedview>
-<path id="path4182" inkscape:connector-curvature="0" d="M234.896,485.029c-2.669-2.858-3.364-8.205-5.593-11.658
+<template>
+  <svg
+    xmlns="http://www.w3.org/2000/svg" 
+    versions="1.1"
+    :width="width" 
+    :height="height" 
+    viewBox="0 0 480 486.75"
+    :aria-labelledby="iconName"
+    role="presentation"
+  >
+    <title :id="iconName" lang="en">{{iconName}} icon</title>
+  <path id="path4182" inkscape:connector-curvature="0" d="M234.896,485.029c-2.669-2.858-3.364-8.205-5.593-11.658
 	c-2.645-4.099-5.889-7.763-8.697-11.742c-3.68-5.217-7.881-10.06-11.601-15.262c-6.362-8.897-13.587-16.63-21.201-24.468
 	c-18.683-19.234-38.196-37.019-60.371-52.199c-34.356-23.52-70.771-44.106-109.819-58.761c-2.709-1.017,0,0-17.614-8.609
 	c3.325-5.34,23.831-34.407,28.638-42.12c8.028-12.881,13.8-26.964,19.782-40.866c7.616-17.7,14.438-35.819,19.899-54.296
@@ -36,4 +28,36 @@
 	c16.237-2.068,56.226-1.88,70.125,0.33c9.04,1.437,21.549,4.209,22.277,4.938c0.15,0.15-0.213,1.752-0.806,3.561
 	c-3.145,9.582-7.186,28.637-9.049,42.662c-3.581,26.956-3.578,70.348,0.006,102.375c1.409,12.596,3.907,28.753,4.624,29.913
 	C243.414,445.276,243.732,444.018,246.385,430.125L246.385,430.125z"/>
-</svg>
+  </svg>
+</template>
+
+<script>
+export default {
+  props: {
+    iconName: {
+      type: String,
+      default: 'box'
+    },
+    width: {
+      type: [Number, String],
+      default: 50
+    },
+    height: {
+      type: [Number, String],
+      default: 50
+    },
+    iconColor: {
+      type: String,
+      default: 'currentColor'
+    }
+  }
+}
+</script>
+
+<style scoped>
+svg {
+  display: inline-block;
+  vertical-align: baseline;
+  margin-bottom: -2px; /* yes, I'm that particular about formatting */
+}
+</style>
