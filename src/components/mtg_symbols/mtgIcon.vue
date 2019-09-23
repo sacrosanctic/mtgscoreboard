@@ -17,11 +17,16 @@
       :style="'fill:' + icon.circleColour +';stroke-width:6'"
     />
     <path :d="icon.svg"/>
+    <!-- {{icon.svg}} -->
   </svg>
 </template>
 
 <script>
 import { default as iconSet } from './mtgIcon.js'
+
+/*reference
+https://jannerantala.com/tutorials/vue-replace-text-with-component-with-props/
+*/
 
 export default {
   data: () => ({

@@ -35,7 +35,7 @@
                 <v-row no-gutters>
                   <v-col cols="auto">
                 <v-list-item>
-                  <v-list-item-icon class="mr-2"><v-icon>mdi-alert-circle</v-icon></v-list-item-icon>
+                  <v-list-item-icon class="mr-2"><mtg-icon>experience</mtg-icon></v-list-item-icon>
                   <v-list-item-content>: {{counters[player.id][2]}}</v-list-item-content>
                 </v-list-item>
                   </v-col>
