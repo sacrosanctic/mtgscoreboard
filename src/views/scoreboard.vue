@@ -17,7 +17,6 @@
             <v-spacer></v-spacer>
             <div style="font-size:.65em">
               <component :is="{template:'<div>'+cmdrCastMod(player.manaCost,counters[player.id][1])+'</div>'}"/>
-              <!-- ({{counters[player.id][1]}}) -->
             </div>
           </v-card-title>
           <v-card-text>
@@ -26,7 +25,13 @@
           <v-row no-gutters>
             <v-col cols="12" class="ma-auto">
               <div class="container">
-              <card :cardName="player.cardName"></card>
+              <card :cardName="player.cardName">
+                <v-card-title
+                  class="justify-end align-end fill-height"
+                >
+                  {{counters[player.id][1]}}
+                </v-card-title>
+              </card>
               </div>
             </v-col>
             <v-col cols="12">
@@ -103,24 +108,21 @@ export default {
         })
       return art
     },
-    // test() {
-    //   return {
-    //     // template: '<mtg-icon>B</mtg-icon>'
-    //     template: '<div>asdf</div>'
-    //   }
-    // },
     cmdrCastMod(manaCost,cast) {
       let regex = /{(\d+)}/g
       if(manaCost.search(regex) >= 0) {
-        manaCost =  manaCost.replace(/{(\d+)}/g,function(match,p1) {
-          return '{' + (Number(p1) + cast * 2) + '}'
+        manaCost = manaCost.replace(regex,function(match,p1) {
+          if(Number(p1)+cast*2>0)
+            return '{' + (Number(p1) + cast * 2) + '}'
+          else
+            return ''
         })
-      } else if(cast!=0) {
+      } else if(cast>0) {
         manaCost = '{' + (cast * 2) + '}' + manaCost
       }
-      let regex2 = /{[wubrgWUBRG]}/g
+      let regex2 = /{([wubrgWUBRG1-9sScCxX](\/[wubrgWUBRGP])*)}/g
       if(manaCost.search(regex2) >= 0) {
-        manaCost = manaCost.replace(/{([wubrgWUBRG])}/g,function(match,p1) {
+        manaCost = manaCost.replace(regex2,function(match,p1) {
           return "<mtg-icon>" + p1 + "</mtg-icon>"
         })
       }

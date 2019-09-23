@@ -9,15 +9,7 @@
     role="presentation"
   >
     <title :id="icon.name" lang="en">{{icon.name}}</title>
-    <circle 
-      v-if="icon.circle" 
-      cx="300" 
-      cy="300" 
-      r="300" 
-      :style="'fill:' + icon.circleColour +';stroke-width:6'"
-    />
-    <path :d="icon.svg"/>
-    <!-- {{icon.svg}} -->
+    <g v-html="icon.svg"></g>
   </svg>
 </template>
 

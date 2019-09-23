@@ -1,8 +1,9 @@
 <template>
   <v-img
+    class="white--text"
     :src="img"
     contain
-  ></v-img>
+  ><slot /></v-img>
 </template>
 
 <script>
