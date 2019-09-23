@@ -22,7 +22,6 @@
 
       <v-spacer></v-spacer>
       <v-autocomplete @input="cardLookUp"
-        @focus="currentCard=''"
         name="searchbar"
         v-model="currentCard"
         auto-select-first
@@ -130,7 +129,7 @@
 </template>
 
 <script>
-// import card from "@/components/card.vue";
+import _ from 'lodash'
 
 export default {
   name: "App",
@@ -174,20 +173,20 @@ export default {
   },
   watch: {
     search (val) {
-       // if(this.items.length > 0) return
-      if (this.loading2) return
+      this.find(val)
+    }
+  },
+  methods: {
+    find: _.debounce(function(val) {
       this.loading2 = true
       this.$axios.get('https://api.scryfall.com/cards/autocomplete?q='+ val)
         .then(response => {
           this.entries = response.data.data
         })
-        // .catch(err => {console.log(err)})
         .finally(() => {
           this.loading2 = false
         })
-    }
-  },
-  methods: {
+    },500),
     reset(val) {
       if(val == 'all') this.$store.dispatch('reset')
       else if (val == 'life') this.$store.dispatch('resetLife')
@@ -201,7 +200,6 @@ export default {
     }
   },
   components: {
-    // card
   }
 };
 </script>

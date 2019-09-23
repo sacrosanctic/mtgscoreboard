@@ -32,7 +32,7 @@ export default {
   props: {
     iconName: {
       type: String,
-      default: 'box'
+      default: 'mtg symbol'
     },
     width: {
       type: [Number, String],
