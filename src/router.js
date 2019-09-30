@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import scoreboard from './views/scoreboard.vue'
 import tracker from './views/tracker.vue'
+import settings from './views/settings.vue'
 
 Vue.use(Router)
 
@@ -21,6 +22,11 @@ export default new Router({
       path: '/tracker',
       name: 'tracker',
       component: tracker
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: settings
     },
   ],
   mode: 'history'

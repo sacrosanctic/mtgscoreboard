@@ -11,6 +11,18 @@ export default new Vuex.Store({
     settings: {
       startingLife: 40,
       currBoard: 'scoreboard/-Lne7_VJOBzY4Q9e4Eep/',
+      cmdrDmg: false,
+      format: 'commander',
+    },
+    format: {
+      commander: {
+        startingLife: 30,
+        cmdrDmg: true
+      },
+      Brawl: {
+        startingLife: 30,
+        cmdrDmg: false
+      }
     },
     counterList: [
       'life',
@@ -53,7 +65,6 @@ export default new Vuex.Store({
   },
   actions: {
     init: firebaseAction(function(context) {
-      
       context.commit('setLoading',true)
       const p1 = context.bindFirebaseRef('counters', db.ref(context.state.settings.currBoard + 'counters'))
       const p2 = context.bindFirebaseRef('players', db.ref(context.state.settings.currBoard + 'players'))

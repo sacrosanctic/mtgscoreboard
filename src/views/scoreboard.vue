@@ -32,7 +32,7 @@
               </card>
               </div>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="12" v-if="settings.format=='commander'">
               <v-container style="padding:0 12px">
                 <v-row>
                   <v-col>
@@ -56,7 +56,7 @@
                 </v-row>
               </v-container>
             </v-col>
-            <v-col>
+            <v-col v-if="settings.format=='commander'">
               <v-container>
                 <v-row>
                   <v-col
@@ -71,7 +71,7 @@
                       :class="cmdrDmgColour(cmdrDmgs[player2.id][player.id])"
                     >
                       <!-- :style="'background-color:'+cmdrDmgColour(cmdrDmgs[player2.id][player.id])" -->
-                      {{cmdrDmgs[player2.id][player.id]}}
+                      {{zeroReplacement(cmdrDmgs[player2.id][player.id])}}
                     </v-card>
                     <!-- {{player2.name.substring(0,1)}} -->
                   </v-col>
@@ -98,7 +98,7 @@ export default {
   }),
     computed: {
       ...mapState([
-      'players', 'counterList', 'counters', 'cmdrDmgs', 'loading',
+      'players', 'counterList', 'counters', 'cmdrDmgs', 'loading', 'settings',
     ]),
   },
   watch: {
@@ -118,6 +118,12 @@ export default {
       if(dmg > 19) colour = 'red lighten-2'
       if(dmg > 20) colour = 'red lighten-1'
       return colour
+    },
+    zeroReplacement(val) {
+      if(val == 0) {
+        return '-'
+      }
+      return val
     },
     getArt(cardName) {
       var art = ''
