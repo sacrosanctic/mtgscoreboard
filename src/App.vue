@@ -92,11 +92,14 @@
     </v-content>
     <v-footer app>
     </v-footer>
+    <v-textarea v-model="textarea"></v-textarea>
   </v-app>
 </template>
 
 <script>
 import _ from 'lodash'
+var en = require("nanoid-good/locale/en")
+var generate = require("nanoid-good/generate")(en)
 
 export default {
   name: "App",
@@ -109,6 +112,8 @@ export default {
     currentCard: null,
     currentCardImg: null,
     dialogQR: false,
+    sessionID: generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',7),
+    textarea: [],
   }),
   computed: {
     items () {
