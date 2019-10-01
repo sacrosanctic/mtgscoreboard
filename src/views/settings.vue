@@ -3,7 +3,7 @@
     <v-btn @click="resetLife" class="red lighten-1" dark>New game</v-btn>
     <v-container>
       <p>Format</p>
-      <v-radio-group v-model="format" mandatory>
+      <v-radio-group v-model="settings.format" mandatory>
         <v-radio label="commander" value="commander"></v-radio>
         <v-radio label="brawl" value="brawl"></v-radio>
       </v-radio-group>
@@ -12,15 +12,21 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: "Settings",
   data: () => ({
-    format: 'commander',
   }),
   methods: {
     resetLife() {
       this.$store.dispatch('resetLife')
     }
+  },
+  computed: {
+    ...mapState([
+      'settings',
+    ]),
   }
 
 }

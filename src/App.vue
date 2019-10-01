@@ -33,7 +33,7 @@
         <v-btn class="primary--text" text to="/">Scoreboard</v-btn>
         <v-btn class="primary--text" text to="/tracker">Tracker</v-btn>
         <v-btn class="primary--text" text to="/settings">Settings</v-btn>
-        <v-btn class="primary--text" text @click.stop="dialogQR=true">Invite</v-btn>
+        <v-btn class="primary--text" text @click.stop="dialogQR=true">{{inviteCode}}</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -109,6 +109,7 @@ export default {
     currentCard: null,
     currentCardImg: null,
     dialogQR: false,
+    inviteCode: 'F43AP12'
   }),
   computed: {
     items () {

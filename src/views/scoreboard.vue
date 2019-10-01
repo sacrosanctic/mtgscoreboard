@@ -98,7 +98,7 @@ export default {
   }),
     computed: {
       ...mapState([
-      'players', 'counterList', 'counters', 'cmdrDmgs', 'loading', 'settings',
+        'players', 'counterList', 'counters', 'cmdrDmgs', 'loading', 'settings',
     ]),
   },
   watch: {
