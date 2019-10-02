@@ -20,14 +20,13 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col 
-        cols="12" 
-        sm="6" 
-        lg="3" 
+      <v-col
+        cols="12"
+        sm="6"
+        lg="3"
         xl="2"
       >
         <v-card>
-
           <v-card-title
             v-show="!commander.edit"
             @click="toggleEdit(commander)"
@@ -66,7 +65,6 @@
           >
           </v-text-field>
           </v-card-text>
-
           <v-list dense>
             <v-list-item-group class="primary--text" v-model="listValue">
               <v-list-item
@@ -98,7 +96,7 @@
                     v-for="player in players"
                     :key="player.id"
                   >
-                    <v-list-item 
+                    <v-list-item
                       :value="'player-'+player.id"
                     >
                       <v-list-item-title>
