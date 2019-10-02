@@ -112,12 +112,9 @@ export default {
     currentCard: null,
     currentCardImg: null,
     dialogQR: false,
-<<<<<<< HEAD
     sessionID: generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',7),
     textarea: [],
-=======
     inviteCode: 'F43AP12'
->>>>>>> 5a9b6ce670e842d2ecb406edb288ac42183be661
   }),
   computed: {
     items () {
