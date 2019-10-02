@@ -33,7 +33,7 @@
         <v-btn class="primary--text" text to="/">Scoreboard</v-btn>
         <v-btn class="primary--text" text to="/tracker">Tracker</v-btn>
         <v-btn class="primary--text" text to="/settings">Settings</v-btn>
-        <v-btn class="primary--text" text @click.stop="dialogQR=true">{{inviteCode}}</v-btn>
+        <v-btn class="primary--text" text @click.stop="dialogQR=true">{{scoreboardId}}</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -92,12 +92,12 @@
     </v-content>
     <v-footer app>
     </v-footer>
-    <v-textarea v-model="textarea"></v-textarea>
   </v-app>
 </template>
 
 <script>
 import _ from 'lodash'
+import { mapState } from 'vuex'
 var en = require("nanoid-good/locale/en")
 var generate = require("nanoid-good/generate")(en)
 
@@ -112,19 +112,27 @@ export default {
     currentCard: null,
     currentCardImg: null,
     dialogQR: false,
-<<<<<<< HEAD
-    sessionID: generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',7),
-    textarea: [],
-=======
-    inviteCode: 'F43AP12'
->>>>>>> 5a9b6ce670e842d2ecb406edb288ac42183be661
+    scoreboardId: '',
   }),
   computed: {
     items () {
       return this.entries
-    }
+    },
+    ...mapState([
+      'settings',
+    ])
   },
   mounted () {
+    this.scoreboardId = localStorage.getItem('scoreboardId')
+    if(this.scoreboardId == null) {
+      let id = generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',7)
+      this.scoreboardId = id
+      localStorage.setItem('scoreboardId',id)
+      //create firebase board
+      this.$store.dispatch('createBoard',id)
+      settings.scoreboardId
+      // this.$store.dispatch('bind')
+    }
     window.addEventListener('keydown', e => {
       if(e.key == 'Escape' || e.key == ' ') {
         this.dialog = false;
