@@ -56,21 +56,28 @@
           primary-title
         >
           QR CODE
-        </v-card-title>
-        <v-img
-          height="500px"
-          src=".\assets\qr-code1000.png"
-        ></v-img>
-        <v-card-actions>
           <div class="flex-grow-1"></div>
           <v-btn
             color="primary"
             text
-            @click="dialog = false"
+            @click="dialogQR = false"
           >
             Close
           </v-btn>
-        </v-card-actions>
+        </v-card-title>
+          <!-- src=".\assets\qr-code1000.png" -->
+        <v-img
+          height="500px"
+          :src="qrCode"
+        ></v-img>
+        <v-text-field
+          label="invite code"
+          single-line
+          dense
+          filled
+          autofocus
+          v-model="inviteInput"
+        ></v-text-field>
       </v-card>
     </v-dialog>
   </div>
@@ -112,9 +119,15 @@ export default {
     currentCard: null,
     currentCardImg: null,
     dialogQR: false,
-    scoreboardId: '',
+    scoreboardId: null,
+    inviteInput: null,
   }),
   computed: {
+    qrCode() {
+      return 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data='+
+        encodeURI('http://scottwu.ca/mtgscoreboard/')+
+        this.settings.scoreboardId
+    },
     items () {
       return this.entries
     },
@@ -123,15 +136,8 @@ export default {
     ])
   },
   mounted () {
-    this.scoreboardId = localStorage.getItem('scoreboardId')
-    // if(this.scoreboardId != null) {
-      let id = generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',7)
-      this.settings.scoreboardId = id
-      this.scoreboardId = id
-      localStorage.setItem('scoreboardId',id)
-      //create firebase board
-      this.$store.dispatch('createBoard',id)
-    // }
+    this.loadScoreboard('localStorage')
+
     window.addEventListener('keydown', e => {
       if(e.key == 'Escape' || e.key == ' ') {
         this.dialog = false;
@@ -150,6 +156,38 @@ export default {
     }
   },
   methods: {
+    // loadInvite:((e) => {
+    //   console.log(e)
+    // }),
+    loadScoreboard(method) {
+      let scoreboardId = null
+      switch (method) {
+        case 'input':
+          scoreboardId = this.inviteInput
+          this.inviteInput = null
+          break
+        case 'qr':
+          break
+        case 'localStorage':
+          scoreboardId = localStorage.getItem('scoreboardId')
+          break
+        case null:
+        default:
+          scoreboardId = null
+      //load from url
+      }
+      if(scoreboardId == null) {
+        let id = generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',7)
+        this.$store.dispatch('createBoard',id)
+        localStorage.setItem('scoreboardId',id)
+        this.scoreboardId = id
+        }
+      else {
+        this.$store.dispatch('loadBoard',scoreboardId)
+        localStorage.setItem('scoreboardId',scoreboardId)
+        this.scoreboardId = scoreboardId
+      }
+    },
     find: _.debounce(function(val) {
       this.loading2 = true
       this.$axios.get('https://api.scryfall.com/cards/autocomplete?q='+ val)

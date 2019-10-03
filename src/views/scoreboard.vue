@@ -50,7 +50,7 @@
                   <v-col>
                     <v-card outlined>
                       <mtg-icon>energy</mtg-icon>
-                      {{counters[player.id][3]}}
+                      {{counters[player.id][3]}}  
                     </v-card>
                   </v-col>
                 </v-row>
@@ -70,10 +70,8 @@
                       style="text-align:center"
                       :class="cmdrDmgColour(cmdrDmgs[player2.id][player.id])"
                     >
-                      <!-- :style="'background-color:'+cmdrDmgColour(cmdrDmgs[player2.id][player.id])" -->
                       {{zeroReplacement(cmdrDmgs[player2.id][player.id])}}
                     </v-card>
-                    <!-- {{player2.name.substring(0,1)}} -->
                   </v-col>
                 </v-row>
               </v-container>

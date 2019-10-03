@@ -10,8 +10,7 @@ export default new Vuex.Store({
   state: {
     settings: {
       startingLife: 40,
-      currBoard: 'scoreboard/-Lne7_VJOBzY4Q9e4Eep/',
-      scoreboardId: '-Lne7_VJOBzY4Q9e4Eep',
+      scoreboardId: '1MJ8JIX',
       format: 'commander',
     },
     format: {
@@ -61,6 +60,9 @@ export default new Vuex.Store({
     setStatus(state, payload) {
       state.status = payload
     },
+    setScoreboardId(state, payload) {
+      Vue.set(state.settings,'scoreboardId', payload)
+    },
     ...vuexfireMutations,
   },
   actions: {
@@ -70,23 +72,49 @@ export default new Vuex.Store({
       const p2 = context.bindFirebaseRef('players', db.ref('scoreboard/'+context.state.settings.scoreboardId+'/players'))
       const p3 = context.bindFirebaseRef('cmdrDmgs', db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs'))
       Promise.all([p1,p2,p3]).then(() => {
-        context.commit('setLoading',false)
+        // context.commit('setLoading',false)
       })
     }),
     unbind: firebaseAction(function(context) {
+      context.commit('setLoading',true)
       const p1 = context.unbindFirebaseRef('counters')
       const p2 = context.unbindFirebaseRef('players')
       const p3 = context.unbindFirebaseRef('cmdrDmgs')
       Promise.all([p1,p2,p3]).then(() => {
-        context.commit('setLoading',false)
+        // context.commit('setLoading',false)
       })
     }),
+    loadBoard: firebaseAction((context, payload) => {
+      context.commit('setLoading', true)
+      context.commit('setScoreboardId', payload)
+      context.dispatch('unbind')
+        .then(() => {
+          context.dispatch('bind')
+          .then(() => {
+            context.commit('setLoading', false)
+          })
+        })
+      }),
     createBoard: firebaseAction((context, payload) => {
-      db
+      context.commit('setLoading', true)
+      context.commit('setScoreboardId', payload)
+      return db
         .ref('scoreboard/').child(payload)
-        .set('').finally(
-          context.dispatch('resetLife')
-        )
+        .set({
+          createDate: Date.now()
+        })
+        .then(() => {
+          context.dispatch('reset')
+          .then(() => {
+            context.dispatch('unbind')
+            .then(() => {
+              context.dispatch('bind')
+              .then(() => {
+                context.commit('setLoading', false)
+              })
+            })
+          })
+        })
     }),
     setCmdrDmg: firebaseAction((context, payload) => {
       return db
