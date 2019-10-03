@@ -69,16 +69,24 @@ export default new Vuex.Store({
       const p1 = context.bindFirebaseRef('counters', db.ref('scoreboard/'+context.state.settings.scoreboardId+'/counters'))
       const p2 = context.bindFirebaseRef('players', db.ref('scoreboard/'+context.state.settings.scoreboardId+'/players'))
       const p3 = context.bindFirebaseRef('cmdrDmgs', db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs'))
-      Promise.all([p1, p2, p3]).then(() => {
+      Promise.all([p1,p2,p3]).then(() => {
+        context.commit('setLoading',false)
+      })
+    }),
+    unbind: firebaseAction(function(context) {
+      const p1 = context.unbindFirebaseRef('counters')
+      const p2 = context.unbindFirebaseRef('players')
+      const p3 = context.unbindFirebaseRef('cmdrDmgs')
+      Promise.all([p1,p2,p3]).then(() => {
         context.commit('setLoading',false)
       })
     }),
     createBoard: firebaseAction((context, payload) => {
-      return db
-              .ref('scoreboard/')
-              .set(payload)
-                .then(value=>(console.log(value)))
-                .catch(error=>(console.log(error)))
+      db
+        .ref('scoreboard/').child(payload)
+        .set('').finally(
+          context.dispatch('resetLife')
+        )
     }),
     setCmdrDmg: firebaseAction((context, payload) => {
       return db
@@ -128,7 +136,7 @@ export default new Vuex.Store({
       let startingLife = context.state.settings.startingLife
       const cmdrDmgs = Array(numOfPlayers).fill(0).map(()=>Array(numOfPlayers).fill(0))
       const counters = Array(numOfPlayers).fill(0).map(()=>Array(5).fill(startingLife).fill(0,1))
-      db.ref('scoreboard/'+context.state.settings.scoreboardId+'/counters/')
+      db.ref('scoreboard/'+context.state.settings.scoreboardId).child('counters')
         .set(counters)
       db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/')
         .set(cmdrDmgs)

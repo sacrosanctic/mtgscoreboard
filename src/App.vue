@@ -124,15 +124,14 @@ export default {
   },
   mounted () {
     this.scoreboardId = localStorage.getItem('scoreboardId')
-    if(this.scoreboardId == null) {
+    // if(this.scoreboardId != null) {
       let id = generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',7)
+      this.settings.scoreboardId = id
       this.scoreboardId = id
       localStorage.setItem('scoreboardId',id)
       //create firebase board
       this.$store.dispatch('createBoard',id)
-      settings.scoreboardId
-      // this.$store.dispatch('bind')
-    }
+    // }
     window.addEventListener('keydown', e => {
       if(e.key == 'Escape' || e.key == ' ') {
         this.dialog = false;
