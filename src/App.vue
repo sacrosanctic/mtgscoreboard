@@ -123,7 +123,7 @@ export default {
     currentCardImg: null,
     dialogQR: false,
     scoreboardId: null,
-    inviteInput: null,
+    inviteInput: '',
   }),
   computed: {
     qrCode() {
@@ -154,43 +154,50 @@ export default {
     })
   },
   watch: {
-    search (val) {
+    inviteInput(val) {
+      if(val.length < 7) return
+      this.inviteCodeDisable = true
+      this.loadScoreboard('inviteCode')
+    },
+    search(val) {
       this.find(val)
     }
   },
   methods: {
-    // loadInvite:((e) => {
-    //   console.log(e)
-    // }),
     loadScoreboard(method) {
       let scoreboardId = null
-      switch (method) {
-        case 'input':
-          //load from invite code entry
-          scoreboardId = this.inviteInput
-          this.inviteInput = null
-          break
-        case 'qr':
-          //load from url
-          break
-        case 'localStorage':
-          //load from local storage
-          scoreboardId = localStorage.getItem('scoreboardId')
-          break
-        case null:
-        default:
-          scoreboardId = null
+
+      if(method == 'inviteCode') {
+        //load from invite code
+        scoreboardId = this.inviteInput.toUpperCase()
+        this.inviteCodeDisable = false
+        this.inviteInput = ''
+        this.dialogQR = false
+      } else if(method == 'qr') {
+        //load from qr code
+
+      } else if(method == 'localStorage') {
+        //load from local storage
+        scoreboardId = localStorage.getItem('scoreboardId')
+      } else {
+        scoreboardId = null
       }
+
       if(scoreboardId == null) {
         let id = generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',7)
         this.$store.dispatch('createBoard',id)
         localStorage.setItem('scoreboardId',id)
         this.scoreboardId = id
-        }
+      }
       else {
         this.$store.dispatch('loadBoard',scoreboardId)
-        localStorage.setItem('scoreboardId',scoreboardId)
-        this.scoreboardId = scoreboardId
+          .then(()=> {
+            localStorage.setItem('scoreboardId',scoreboardId)
+            this.scoreboardId = scoreboardId
+          })
+          .catch(()=>{
+            // console.log('bad invite code')
+          })
       }
     },
     find: _.debounce(function(val) {

@@ -74,29 +74,26 @@ export default new Vuex.Store({
       const p1 = context.bindFirebaseRef('counters', db.ref('scoreboard/'+context.state.settings.scoreboardId+'/counters'))
       const p2 = context.bindFirebaseRef('players', db.ref('scoreboard/'+context.state.settings.scoreboardId+'/players'))
       const p3 = context.bindFirebaseRef('cmdrDmgs', db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs'))
-      Promise.all([p1,p2,p3]).then(() => {
-        // context.commit('setLoading',false)
-      })
-    }),
-    unbind: firebaseAction(function(context) {
-      context.commit('setLoading',true)
-      const p1 = context.unbindFirebaseRef('counters')
-      const p2 = context.unbindFirebaseRef('players')
-      const p3 = context.unbindFirebaseRef('cmdrDmgs')
-      Promise.all([p1,p2,p3]).then(() => {
-        // context.commit('setLoading',false)
-      })
+      return Promise.all([p1,p2,p3])
     }),
     loadBoard: firebaseAction((context, payload) => {
       context.commit('setLoading', true)
-      context.commit('setScoreboardId', payload)
-      // context.dispatch('unbind')
-        // .then(() => {
-          context.dispatch('bind')
-          .then(() => {
-            // context.commit('setLoading', false)
+      return new Promise((resolve, reject) => {
+        db.ref('scoreboard/'+payload).once('value')
+          .then(snapshot=> {
+            if(snapshot.exists()) {
+              context.commit('setScoreboardId', payload)
+              context.dispatch('bind')
+              .then(() => {
+                context.commit('setLoading', false)
+                resolve('exist')
+              })
+            }else {
+              context.commit('setLoading', false)
+              reject('does not exist')
+            }
           })
-        // })
+        })
       }),
     createBoard: firebaseAction((context, payload) => {
       context.commit('setLoading', true)
@@ -107,14 +104,11 @@ export default new Vuex.Store({
           createDate: Date.now()
         })
         .then(() => {
-          context.dispatch('reset')
+          context.dispatch('bind')
           .then(() => {
-            context.dispatch('unbind')
+            context.dispatch('reset')
             .then(() => {
-              context.dispatch('bind')
-              .then(() => {
-                context.commit('setLoading', false)
-              })
+              context.commit('setLoading', false)
             })
           })
         })

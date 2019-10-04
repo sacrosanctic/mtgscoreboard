@@ -27,6 +27,7 @@
                   <v-card-title
                     class="justify-end align-end fill-height"
                   >
+                    <!-- {{player.cardName}} -->
                     {{counters[player.id][1]}}
                 </v-card-title>
               </card>
