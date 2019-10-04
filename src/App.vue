@@ -138,7 +138,6 @@ export default {
   mounted () {
     if(this.$route.params.id != null) {
       this.loadScoreboard('qr')
-      console.log('qr code')
     }else {
       this.loadScoreboard('localStorage')
     }
