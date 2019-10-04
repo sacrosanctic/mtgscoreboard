@@ -195,7 +195,7 @@ export default {
           .then(()=> {
             localStorage.setItem('scoreboardId',scoreboardId)
             this.scoreboardId = scoreboardId
-            if(this.$router.history.current.path != '/') this.$router.push('/')
+            if(this.$route.params.id != null) this.$router.push('/')
           })
           .catch(()=>{
             // console.log('bad invite code')
