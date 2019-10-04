@@ -11,12 +11,17 @@ export default new Router({
     process.env.NODE_ENV === 'production'
       ? '/mtgscoreboard/'
       : '/',
-  
   routes: [
     {
       path: '/',
       name: 'scoreboard',
       component: scoreboard
+    },
+    {
+      path: '/scoreboard/:id',
+      name: 'scoreboard-specific',
+      component: scoreboard,
+      props: true,
     },
     {
       path: '/tracker',

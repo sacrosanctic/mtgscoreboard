@@ -98,9 +98,6 @@
       </v-dialog>
     </v-content>
     <v-footer app>
-      <v-btn @click="$store.dispatch('setLoading',false)">
-        Help
-      </v-btn>
     </v-footer>
   </v-app>
 </template>
@@ -128,7 +125,7 @@ export default {
   computed: {
     qrCode() {
       return 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data='+
-        encodeURI('http://scottwu.ca/mtgscoreboard/')+
+        encodeURI('http://scottwu.ca/mtgscoreboard/scoreboard/')+
         this.settings.scoreboardId
     },
     items () {
@@ -139,7 +136,12 @@ export default {
     ])
   },
   mounted () {
-    this.loadScoreboard('localStorage')
+    if(this.$route.params.id != null) {
+      this.loadScoreboard('qr')
+      console.log('qr code')
+    }else {
+      this.loadScoreboard('localStorage')
+    }
 
     window.addEventListener('keydown', e => {
       if(e.key == 'Escape' || e.key == ' ') {
@@ -175,7 +177,7 @@ export default {
         this.dialogQR = false
       } else if(method == 'qr') {
         //load from qr code
-
+        scoreboardId = this.$route.params.id.toUpperCase()
       } else if(method == 'localStorage') {
         //load from local storage
         scoreboardId = localStorage.getItem('scoreboardId')
@@ -194,6 +196,7 @@ export default {
           .then(()=> {
             localStorage.setItem('scoreboardId',scoreboardId)
             this.scoreboardId = scoreboardId
+            if(this.$router.history.current.path != '/') this.$router.push('/')
           })
           .catch(()=>{
             // console.log('bad invite code')
