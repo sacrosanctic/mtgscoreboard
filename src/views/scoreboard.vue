@@ -71,7 +71,7 @@
                       style="text-align:center"
                       :class="cmdrDmgColour(cmdrDmgs[player2.id][player.id])"
                     >
-                      <!-- {{zeroReplacement(cmdrDmgs[player2.id][player.id])}} -->
+                      {{zeroReplacement(cmdrDmgs[player2.id][player.id])}}
                     </v-card>
                   </v-col>
                 </v-row>
