@@ -37,20 +37,20 @@
                 <v-row>
                   <v-col>
                     <v-card outlined>
-                      <mtg-icon>poison</mtg-icon>
+                      <!-- <mtg-icon>poison</mtg-icon> -->
                       {{counters[player.id][4]}}
                     </v-card>
                   </v-col>
                   <v-col>
                     <v-card outlined>
-                      <mtg-icon>experience</mtg-icon>
+                      <!-- <mtg-icon>experience</mtg-icon> -->
                       {{counters[player.id][2]}}
                     </v-card>
                   </v-col>
                   <v-col>
                     <v-card outlined>
-                      <mtg-icon>energy</mtg-icon>
-                      {{counters[player.id][3]}}  
+                      <!-- <mtg-icon>energy</mtg-icon> -->
+                      {{counters[player.id][3]}}
                     </v-card>
                   </v-col>
                 </v-row>
@@ -70,7 +70,7 @@
                       style="text-align:center"
                       :class="cmdrDmgColour(cmdrDmgs[player2.id][player.id])"
                     >
-                      {{zeroReplacement(cmdrDmgs[player2.id][player.id])}}
+                      <!-- {{zeroReplacement(cmdrDmgs[player2.id][player.id])}} -->
                     </v-card>
                   </v-col>
                 </v-row>

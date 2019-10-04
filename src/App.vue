@@ -98,6 +98,9 @@
       </v-dialog>
     </v-content>
     <v-footer app>
+      <v-btn @click="$store.dispatch('setLoading',false)">
+        Help
+      </v-btn>
     </v-footer>
   </v-app>
 </template>
@@ -163,18 +166,20 @@ export default {
       let scoreboardId = null
       switch (method) {
         case 'input':
+          //load from invite code entry
           scoreboardId = this.inviteInput
           this.inviteInput = null
           break
         case 'qr':
+          //load from url
           break
         case 'localStorage':
+          //load from local storage
           scoreboardId = localStorage.getItem('scoreboardId')
           break
         case null:
         default:
           scoreboardId = null
-      //load from url
       }
       if(scoreboardId == null) {
         let id = generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',7)

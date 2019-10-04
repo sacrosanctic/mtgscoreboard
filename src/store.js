@@ -15,7 +15,7 @@ export default new Vuex.Store({
     },
     format: {
       commander: {
-        startingLife: 30,
+        startingLife: 40,
         cmdrDmg: true
       },
       Brawl: {
@@ -66,6 +66,9 @@ export default new Vuex.Store({
     ...vuexfireMutations,
   },
   actions: {
+    setLoading({ commit }, payload) {
+      commit('setLoading',payload)
+    },
     bind: firebaseAction(function(context) {
       context.commit('setLoading',true)
       const p1 = context.bindFirebaseRef('counters', db.ref('scoreboard/'+context.state.settings.scoreboardId+'/counters'))
@@ -87,13 +90,13 @@ export default new Vuex.Store({
     loadBoard: firebaseAction((context, payload) => {
       context.commit('setLoading', true)
       context.commit('setScoreboardId', payload)
-      context.dispatch('unbind')
-        .then(() => {
+      // context.dispatch('unbind')
+        // .then(() => {
           context.dispatch('bind')
           .then(() => {
-            context.commit('setLoading', false)
+            // context.commit('setLoading', false)
           })
-        })
+        // })
       }),
     createBoard: firebaseAction((context, payload) => {
       context.commit('setLoading', true)
@@ -175,15 +178,15 @@ export default new Vuex.Store({
           id: 0,
           name: 'player1',
           cardName: 'Muldrotha, the Gravetide',
-          cardURI: 'Muldrotha, the Gravetide',
+          cardURI: 'https://api.scryfall.com/cards/c654737d-34ac-42ff-ae27-3a3bbb930fc1',
           manaCost: '{3}{B}{G}{U}'
         },
         {
           id: 1,
           name: 'player2',
           cardName: 'Karn\'s Bastion',
-          cardURI: 'Karn\'s Bastion',
-          manaCost: '{10}'
+          cardURI: 'https://api.scryfall.com/cards/b9d895af-7e8c-419f-bc5d-5596083fbfb6',
+          manaCost: '{2}'
         }
       ]
       const counters = [
