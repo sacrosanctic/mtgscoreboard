@@ -14,7 +14,7 @@
       </v-toolbar-title>
 
       <v-autocomplete
-        @input="cardLookUp"
+        @input="findCardImg"
         name="searchbar"
         v-model="cardName"
         auto-select-first
@@ -61,7 +61,7 @@
             <v-btn
               color="primary"
               text
-              @click="qrDialog = false"
+              @click="qrDialog=false"
             >
               Close
             </v-btn>
@@ -77,6 +77,7 @@
             filled
             autofocus
             v-model="inviteInput"
+            :disabled="inviteCodeDisable"
           ></v-text-field>
         </v-card>
       </v-dialog>
@@ -85,7 +86,7 @@
       v-model="cardDialog"
       width="unset"
       fullscreen
-      @keydown.space="cardDialog = false"
+      @keydown.space="cardDialog=false"
       ref="dialog"
     >
       <v-card dark>
@@ -119,6 +120,7 @@ export default {
     qrDialog: false,
     scoreboardId: null,
     inviteInput: '',
+    inviteCodeDisable: false,
   }),
   computed: {
     qrCode() {
@@ -132,12 +134,10 @@ export default {
     ])
   },
   mounted () {
-    if(this.$route.params.id != null) {
-      this.loadScoreboard('qr')
-    }else {
-      this.loadScoreboard('localStorage')
-    }
+    this.loadScoreboard()
 
+    //listen for escape key and space key to exit dialog
+    //should be refactored
     window.addEventListener('keydown', e => {
       if(e.key == 'Escape' || e.key == ' ') {
         this.cardDialog = false;
@@ -151,10 +151,11 @@ export default {
     })
   },
   watch: {
+    //load scoreboard if invite code is used
     inviteInput(val) {
       if(val.length < 7) return
       this.inviteCodeDisable = true
-      this.loadScoreboard('inviteCode')
+      this.loadScoreboard()
     },
     searchCard(val) {
       this.find(val)
@@ -164,28 +165,31 @@ export default {
     loadScoreboard(method) {
       let scoreboardId = null
 
-      if(method == 'inviteCode') {
+      if(this.inviteCodeDisable == true) {
         //load from invite code
         scoreboardId = this.inviteInput.toUpperCase()
         this.inviteCodeDisable = false
         this.inviteInput = ''
         this.dialogQR = false
-      } else if(method == 'qr') {
+      } else if(this.$route.params.id != null) {
         //load from qr code
         scoreboardId = this.$route.params.id.toUpperCase()
-      } else if(method == 'localStorage') {
+      } else if(localStorage.getItem('scoreboardId') != null) {
         //load from local storage
         scoreboardId = localStorage.getItem('scoreboardId')
       } else {
+        //new scoreboard
         scoreboardId = null
       }
       if(scoreboardId == null) {
+        //new scoreboard
         let id = generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',7)
         this.$store.dispatch('createBoard',id)
         localStorage.setItem('scoreboardId',id)
         this.scoreboardId = id
       }
       else {
+        //load scoreboard
         this.$store.dispatch('loadBoard',scoreboardId)
           .then(()=> {
             localStorage.setItem('scoreboardId',scoreboardId)
@@ -198,12 +202,13 @@ export default {
       }
     },
     find: _.debounce(function(val) {
+      //list of cards for autocomplete
       this.$axios.get('https://api.scryfall.com/cards/autocomplete?q='+ val)
         .then(response => {
           this.entries = response.data.data
         })
     },500),
-    cardLookUp() {
+    findCardImg() {
       this.$axios.get('https://api.scryfall.com/cards/named?exact=' + this.cardName)
         .then(response => {
           this.cardImg = response.data.image_uris.large

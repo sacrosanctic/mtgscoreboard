@@ -134,20 +134,20 @@ export default {
     },
     cmdrCastMod(manaCost,cast) {
       let regex = /{(\d+)}/g
-      if(manaCost.search(regex) >= 0) {
+      if(manaCost.search(regex)>=0) {
         manaCost = manaCost.replace(regex,function(match,p1) {
           if(Number(p1)+cast*2>0)
-            return '{' + (Number(p1) + cast * 2) + '}'
+            return '{'+(Number(p1)+cast*2)+'}'
           else
             return ''
         })
-      } else if(cast>0) {
-        manaCost = '{' + (cast * 2) + '}' + manaCost
+      }else if(cast>0) {
+        manaCost = '{'+(cast*2)+'}'+manaCost
       }
       let regex2 = /{([wubrgWUBRG1-9sScCxX](\/[wubrgWUBRGP])*)}/g
-      if(manaCost.search(regex2) >= 0) {
+      if(manaCost.search(regex2)>=0) {
         manaCost = manaCost.replace(regex2,function(match,p1) {
-          return "<mtg-icon>" + p1 + "</mtg-icon>"
+          return "<mtg-icon>"+p1+"</mtg-icon>"
         })
       }
       return manaCost
@@ -157,5 +157,5 @@ export default {
     card,
     mtgIcon
   }
-};
+}
 </script>

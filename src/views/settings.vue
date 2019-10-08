@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <v-btn @click="resetLife" class="red lighten-1" dark>New game</v-btn>
+    <v-btn @click="$store.dispatch('reset')" class="red lighten-1" dark>New board</v-btn>
     <v-container>
       <p>Format</p>
       <v-radio-group v-model="settings.format" mandatory>

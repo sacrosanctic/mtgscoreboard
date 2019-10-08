@@ -82,7 +82,7 @@ export default new Vuex.Store({
         db.ref('scoreboard/'+payload).once('value')
           .then(snapshot=> {
             if(snapshot.exists()) {
-              context.commit('setScoreboardId', payload)
+              context.commit('setScoreboardId',payload)
               context.dispatch('bind')
               .then(() => {
                 context.commit('setLoading', false)
@@ -115,9 +115,9 @@ export default new Vuex.Store({
     }),
     setCmdrDmg: firebaseAction((context, payload) => {
       return db
-        .ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/' + payload.player + '/' + payload.type)
+        .ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/'+payload.player +'/'+payload.type)
         .transaction(value => {
-          return value + payload.amount
+          return value+payload.amount
         })
         .then(() => {
           db
@@ -137,23 +137,21 @@ export default new Vuex.Store({
       axios.get('https://api.scryfall.com/cards/named?fuzzy=' + encodeURI(payload.value))
       .then(res => {
         res = res.data
-
         const newCard = {
-          cardURI: res.uri,
+          cardURI:res.uri,
           cardName:res.name,
           manaCost:res.mana_cost,
         }
-        db.ref('scoreboard/'+context.state.settings.scoreboardId+'/players/'+ payload.playerId)
+        db.ref('scoreboard/'+context.state.settings.scoreboardId+'/players/'+payload.playerId)
           .update(newCard)
       })
     }),
     setCounter: firebaseAction((context, payload) => {
       return db
-        .ref('scoreboard/'+context.state.settings.scoreboardId+'/counters/' + payload.player + '/' + payload.type)
+        .ref('scoreboard/'+context.state.settings.scoreboardId+'/counters/'+payload.player +'/'+ payload.type)
         .transaction(value => {
           return value + payload.amount
         })
-        .catch(() => {})
     }),
     resetLife: firebaseAction((context) => {
       //do it later
@@ -205,8 +203,8 @@ export default new Vuex.Store({
           res = res.data
 
           const newPlayer = {
-            id: newPlayerId,
-            name: 'player' + (newPlayerId+1),
+            id:newPlayerId,
+            name:'player'+(newPlayerId+1),
             cardURI: res.uri,
             cardName:res.name,
             manaCost:res.mana_cost,
@@ -216,35 +214,33 @@ export default new Vuex.Store({
             .set(newPlayer)
 
           for(let i=0;i<newPlayerId;i++) {
-            db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/'+ i + '/' + newPlayerId)
+            db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/'+i+'/'+newPlayerId)
               .set(0)
           }
           var arr = []
           for(let i=0;i<=newPlayerId;i++) {
             arr.push(0)
           }
-          db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/'+ newPlayerId)
+          db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/'+newPlayerId)
             .set(arr)
 
-          db.ref('scoreboard/'+context.state.settings.scoreboardId+'/counters/'+ newPlayerId)
+          db.ref('scoreboard/'+context.state.settings.scoreboardId+'/counters/'+newPlayerId)
             .set([context.state.settings.startingLife,0,0,0,0])
         })
     }),
     removePlayer: firebaseAction(( context ) => {
       var playerId = context.state.players.length - 1
-      db.ref('scoreboard/'+context.state.settings.scoreboardId+'/players/' + playerId)
+      db.ref('scoreboard/'+context.state.settings.scoreboardId+'/players/'+playerId)
         .remove()
-      db.ref('scoreboard/'+context.state.settings.scoreboardId+'/counters/' + playerId)
+      db.ref('scoreboard/'+context.state.settings.scoreboardId+'/counters/'+playerId)
         .remove()
-      db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/' + playerId)
+      db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/'+playerId)
         .remove()
 
       for(let i=0;i<playerId;i++) {
-        db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/'+ i + '/' + playerId)
+        db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/'+i+'/'+playerId)
           .remove()
       }
     }),
-  },
-  getters: {
   },
 })
