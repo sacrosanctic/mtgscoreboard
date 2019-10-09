@@ -18,7 +18,7 @@ export default new Vuex.Store({
         startingLife: 40,
         cmdrDmg: true
       },
-      Brawl: {
+      brawl: {
         startingLife: 30,
         cmdrDmg: false
       }
@@ -130,6 +130,7 @@ export default new Vuex.Store({
         .catch(() => {})
     }),
     setPlayer: firebaseAction((context, payload) => {
+      //set player name
       db.ref('scoreboard/'+context.state.settings.scoreboardId+'/players/'+ payload.playerId + '/name')
         .set(payload.value)
     }),
@@ -201,7 +202,6 @@ export default new Vuex.Store({
       axios.get('https://api.scryfall.com/cards/random?q=t%3Alegendary+t%3Acreature')
         .then(res => {
           res = res.data
-
           const newPlayer = {
             id:newPlayerId,
             name:'player'+(newPlayerId+1),
@@ -209,10 +209,8 @@ export default new Vuex.Store({
             cardName:res.name,
             manaCost:res.mana_cost,
           }
-
           db.ref('scoreboard/'+context.state.settings.scoreboardId+'/players/'+ newPlayerId)
             .set(newPlayer)
-
           for(let i=0;i<newPlayerId;i++) {
             db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/'+i+'/'+newPlayerId)
               .set(0)
@@ -223,7 +221,6 @@ export default new Vuex.Store({
           }
           db.ref('scoreboard/'+context.state.settings.scoreboardId+'/cmdrDmgs/'+newPlayerId)
             .set(arr)
-
           db.ref('scoreboard/'+context.state.settings.scoreboardId+'/counters/'+newPlayerId)
             .set([context.state.settings.startingLife,0,0,0,0])
         })

@@ -14,8 +14,8 @@
             <div style="font-size:2em">
               {{counters[player.id][0]}}
             </div>
-            <v-spacer></v-spacer>
-            <div style="font-size:.65em">
+            <v-spacer></v-spacer class="hidden-xs-only">
+            <div style="font-size:.65em" class="hidden-xs-only">
               <component :is="{template:'<div>'+cmdrCastMod(player.manaCost,counters[player.id][1])+'</div>'}"/>
             </div>
           </v-card-title>
@@ -23,7 +23,7 @@
           <v-row no-gutters>
             <v-col cols="12">
               <div>
-                <card :cardName="player.cardName">
+                <card :cardName="player.cardName" class="hidden-xs-only">
                   <v-card-title
                     class="justify-end align-end fill-height"
                   >
@@ -63,7 +63,7 @@
                   <v-col
                     v-for="(player2, k) in players"
                     :key="k"
-                    cols="12"
+                    cols="2"
                     sm="3"
                   >
                     <v-card
@@ -71,6 +71,7 @@
                       style="text-align:center"
                       :class="cmdrDmgColour(cmdrDmgs[player2.id][player.id])"
                     >
+                      <!-- {{player2.name}} -->
                       {{zeroReplacement(cmdrDmgs[player2.id][player.id])}}
                     </v-card>
                   </v-col>

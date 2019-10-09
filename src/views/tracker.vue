@@ -2,8 +2,6 @@
   <v-container v-if="!loading">
     <v-row>
       <v-col>
-        <v-btn @click="addPlayer">add player</v-btn>
-        <v-btn @click="removePlayer">remove player</v-btn>
         <v-row>
           <v-col cols="12" sm="4">
               <v-row no-gutters>
@@ -173,12 +171,6 @@ export default {
     },
     setCurrentCounter(counter) {
       this.currentCounter = counter
-    },
-    addPlayer() {
-      this.$store.dispatch('addPlayer')
-    },
-    removePlayer() {
-      this.$store.dispatch('removePlayer')
     },
     setValue(amount) {
       if(this.listValue == null) return false

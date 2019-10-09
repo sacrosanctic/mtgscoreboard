@@ -8,7 +8,7 @@
     </v-navigation-drawer>
 
     <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase" style="padding-right:5px">
+      <v-toolbar-title class="headline text-uppercase d-none d-sm-flex" style="padding-right:5px">
         <span>MTG</span>
         <span class="font-weight-light">Scoreboard</span>
       </v-toolbar-title>
@@ -20,7 +20,7 @@
         auto-select-first
         :search-input.sync="searchCard"
         :items="entries"
-        class="ax-4 primary--text"
+        class="ax-4 primary--text d-none d-sm-flex"
         flat
         hide-details
         filled
@@ -50,24 +50,18 @@
       <v-dialog
         v-model="qrDialog"
         width="500"
+        :fullscreen="$vuetify.breakpoint.xsOnly"
       >
         <v-card>
-          <v-card-title
+          <!-- <v-card-title
             class="headline grey lighten-2"
             primary-title
           >
             QR CODE
             <div class="flex-grow-1"></div>
-            <v-btn
-              color="primary"
-              text
-              @click="qrDialog=false"
-            >
-              Close
-            </v-btn>
-          </v-card-title>
+          </v-card-title> -->
           <v-img
-            height="500px"
+            height="100%"
             :src="qrCode"
           ></v-img>
           <v-text-field
@@ -79,6 +73,14 @@
             v-model="inviteInput"
             :disabled="inviteCodeDisable"
           ></v-text-field>
+          <div style="text-align:center">
+          <v-btn
+            class="primary hidden-sm-and-up"
+            @click="qrDialog=false"
+          >
+            Close
+          </v-btn>
+          </div>
         </v-card>
       </v-dialog>
     </div>
@@ -125,7 +127,7 @@ export default {
   computed: {
     qrCode() {
       //generate invite code for current scoreboard
-      return 'https://api.qrserver.com/v1/create-qr-code/?size=500x500&data='+
+      return 'https://api.qrserver.com/v1/create-qr-code/?margin=0&size=500x500&data='+
         encodeURI(window.location.hostname + '/mtgscoreboard/scoreboard/') +
         this.settings.scoreboardId
     },
@@ -139,7 +141,7 @@ export default {
     //listen for escape key and space key to exit dialog
     //should be refactored
     window.addEventListener('keydown', e => {
-      if(e.key == 'Escape' || e.key == ' ') {
+      if(e.key == 'Escape') {
         this.cardDialog = false;
       }
     }),
@@ -162,7 +164,7 @@ export default {
     }
   },
   methods: {
-    loadScoreboard(method) {
+    loadScoreboard() {
       let scoreboardId = null
 
       if(this.inviteCodeDisable == true) {
