@@ -1,20 +1,20 @@
 <template>
   <v-container v-if="!loading">
     <v-row>
-      <v-col>
-        <v-row>
-          <v-col cols="12" sm="4">
-              <v-row no-gutters>
-                <v-col
-                  v-for="player in players"
-                  :key="player.id"
-                  cols="6"
-                >
-                  <v-btn @click="setCurrentPlayer(player.id)" v-text="player.name"></v-btn>
-                </v-col>
-              </v-row>
-          </v-col>
-        </v-row>
+      <v-col
+        cols="12"
+        sm="6"
+        lg="3"
+        xl="2"
+      >
+        <v-select
+          label="Current Player"
+          :items="players"
+          item-text="name"
+          item-value="id"
+          @change="setCurrentPlayer"
+          >
+        </v-select>
       </v-col>
     </v-row>
     <v-row>
@@ -108,6 +108,21 @@
           </v-list>
         </v-card>
       </v-col>
+      <!-- <v-col
+        cols="12"
+        sm="6"
+        lg="3"
+        xl="2"
+      >
+        <v-card>
+          <p>
+            advanced
+          </p>
+          <v-btn>ping all</v-btn>
+          <v-btn>drain all</v-btn>
+          <v-btn>drain one</v-btn>
+        </v-card>
+      </v-col> -->
     </v-row>
   </v-container>
 </template>
