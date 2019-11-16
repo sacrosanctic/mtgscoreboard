@@ -14,7 +14,7 @@
             <div style="font-size:2em">
               {{counters[player.id][0]}}
             </div>
-            <v-spacer></v-spacer class="hidden-xs-only">
+            <v-spacer class="hidden-xs-only"></v-spacer>
             <div style="font-size:.65em" class="hidden-xs-only">
               <component :is="{template:'<div>'+cmdrCastMod(player.manaCost,counters[player.id][1])+'</div>'}"/>
             </div>
