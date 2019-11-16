@@ -1,24 +1,19 @@
 <template>
-  <v-container v-if="!loading">
+  <v-container v-if="!loading" pa-0>
     <v-row>
       <v-col
         cols="12"
-        sm="3"
-        lg="3"
+        sm="4"
         xl="2"
         v-for="(player, i) in players"
         :key="i"
       >
         <v-card>
           <v-card-title>
-            <div style="font-size:2em">
+            <div style="font-size:1.8em">
               {{counters[player.id][0]}}
             </div>
-<<<<<<< HEAD
-            <v-spacer class="hidden-xs-only"></v-spacer>
-=======
             <v-spacer></v-spacer>
->>>>>>> ec2d744dc0b383568e144059c997a0538d44d2dc
             <div style="font-size:.65em" class="hidden-xs-only">
               <component :is="{template:'<div>'+cmdrCastMod(player.manaCost,counters[player.id][1])+'</div>'}"/>
             </div>
@@ -68,7 +63,7 @@
                     v-for="(player2, k) in players"
                     :key="k"
                     cols="2"
-                    sm="3"
+                    sm="4"
                   >
                     <v-card
                       flat
