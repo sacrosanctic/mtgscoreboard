@@ -1,7 +1,21 @@
 <template>
   <v-container>
-    <v-btn @click="resetLife" class="mx-2 red lighten-1" dark>New game</v-btn>
+    <v-row>
+      <v-col cols="3">
+        <v-btn @click="resetLife" class="mx-2 red lighten-1" dark>New game</v-btn>
+      </v-col>
+      <v-col>
+        <p>set life to default, keep player and commander</p>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="3">
     <v-btn @click="$store.dispatch('reset')" class="mx-2 red lighten-1" dark>New board</v-btn>
+      </v-col>
+      <v-col>
+        <p>remove all presets</p>
+      </v-col>
+    </v-row>
     <!-- starting life {{format[settings.format].startingLife}} -->
     <v-btn class="mx-2" @click="addPlayer">add player</v-btn>
     <v-btn class="mx-2" @click="removePlayer">remove player</v-btn>

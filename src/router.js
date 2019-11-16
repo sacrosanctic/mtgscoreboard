@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import scoreboard from './views/scoreboard.vue'
 import tracker from './views/tracker.vue'
 import settings from './views/settings.vue'
+import practice from './views/practice.vue'
 
 Vue.use(Router)
 
@@ -32,6 +33,11 @@ export default new Router({
       path: '/settings',
       name: 'settings',
       component: settings
+    },
+    {
+      path: '/practice',
+      name: 'practice',
+      component: practice
     },
   ],
   mode: 'history'
