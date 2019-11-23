@@ -34,7 +34,7 @@
         <v-btn class="primary--text" text to="/tracker">Tracker</v-btn>
         <v-btn class="primary--text" text to="/settings">Settings</v-btn>
         <!-- <v-btn class="primary--text" text to="/practice">practice</v-btn> -->
-        <v-btn class="primary--text" text @click.stop="qrDialog=true">{{scoreboardId}}</v-btn>
+        <v-btn class="primary--text" text @click.stop="showQR()">{{scoreboardId}}</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -73,6 +73,7 @@
             autofocus
             v-model="inviteInput"
             :disabled="inviteCodeDisable"
+            ref="qrDialog"
           ></v-text-field>
           <div style="text-align:center">
           <v-btn
@@ -165,15 +166,20 @@ export default {
     }
   },
   methods: {
+    showQR() {
+      this.qrDialog=true
+      this.$nextTick(()=> {
+        this.$refs.qrDialog.focus()
+      })
+    },
     loadScoreboard() {
       let scoreboardId = null
-
       if(this.inviteCodeDisable == true) {
         //load from invite code
         scoreboardId = this.inviteInput.toUpperCase()
         this.inviteCodeDisable = false
         this.inviteInput = ''
-        this.dialogQR = false
+        this.qrDialog = false
       } else if(this.$route.params.id != null) {
         //load from qr code
         scoreboardId = this.$route.params.id.toUpperCase()

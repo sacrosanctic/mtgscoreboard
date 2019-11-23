@@ -1,11 +1,11 @@
 <template>
   <v-container v-if="!loading" pt-0 pb-0>
     <v-row>
-      <v-col cols="12" sm="4" xl="2" v-for="(player, i) in players" :key="i">
+      <v-col cols="12" sm="4" v-for="(player, i) in players" :key="i">
         <v-card>
           <v-row no-gutters>
             <v-col cols="12">
-              <div style="height:200px">
+              <div style="height:200px;text-shadow: 2px 2px 2px black">
                 <card :cardName="player.cardName" class="hidden-xs-only">
                   <v-card-title>
                     <div style="font-size:1.8em">{{counters[player.id][0]}}</div>
