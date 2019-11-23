@@ -25,7 +25,7 @@ export default new Vuex.Store({
     },
     counterList: [
       'life',
-      'cmdr',
+      'commader cast',
       'experience',
       'energy',
       'poison',

@@ -1,8 +1,8 @@
 <template>
   <v-img
+    style="max-height:100%"
     class="white--text"
     :src="img"
-    contain
   ><slot /></v-img>
 </template>
 

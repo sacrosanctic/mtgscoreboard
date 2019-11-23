@@ -90,7 +90,7 @@
             <v-list-item-group class="primary--text" v-model="listValue">
               <v-container>
                 <v-row>
-                  <v-col cols="6"
+                  <v-col cols="4"
                     v-for="player in players"
                     :key="player.id"
                   >
