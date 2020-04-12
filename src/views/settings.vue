@@ -5,15 +5,15 @@
         <v-btn @click="resetLife" class="mx-2 red lighten-1" dark>New game</v-btn>
       </v-col>
       <v-col>
-        <p>set life to default, keep player and commander</p>
+        <p>same friends, new game</p>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="3">
-    <v-btn @click="$store.dispatch('reset')" class="mx-2 red lighten-1" dark>New board</v-btn>
+    <v-btn @click="fullReset" class="mx-2 red lighten-1" dark>New board</v-btn>
       </v-col>
       <v-col>
-        <p>remove all presets</p>
+        <p>remove all settings, new invite code</p>
       </v-col>
     </v-row>
     <!-- starting life {{format[settings.format].startingLife}} -->
@@ -31,6 +31,9 @@
 
 <script>
 import { mapState } from 'vuex'
+var en = require("nanoid-good/locale/en")
+var generate = require("nanoid-good/generate")(en)
+
 
 export default {
   name: "Settings",
@@ -39,6 +42,12 @@ export default {
   methods: {
     resetLife() {
       this.$store.dispatch('resetLife')
+    },
+    fullReset() {
+      let id = generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',7)
+      this.$store.dispatch('createBoard',id)
+      localStorage.setItem('scoreboardId',id)
+      this.$router.push('/')
     },
     addPlayer() {
       this.$store.dispatch('addPlayer')

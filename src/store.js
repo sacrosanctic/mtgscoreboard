@@ -10,7 +10,7 @@ export default new Vuex.Store({
   state: {
     settings: {
       startingLife: 40,
-      scoreboardId: '1MJ8JIX',
+      scoreboardId: '',
       format: 'commander',
     },
     format: {

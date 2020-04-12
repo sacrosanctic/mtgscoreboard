@@ -34,7 +34,7 @@
         <v-btn class="primary--text" text to="/tracker">Tracker</v-btn>
         <v-btn class="primary--text" text to="/settings">Settings</v-btn>
         <!-- <v-btn class="primary--text" text to="/practice">practice</v-btn> -->
-        <v-btn class="primary--text" text @click.stop="showQR()">{{scoreboardId}}</v-btn>
+        <v-btn class="primary--text" text @click.stop="showQR()">{{settings.scoreboardId}}</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
