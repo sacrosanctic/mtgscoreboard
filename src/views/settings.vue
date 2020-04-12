@@ -19,6 +19,12 @@
     <!-- starting life {{format[settings.format].startingLife}} -->
     <v-btn class="mx-2" @click="addPlayer">add player</v-btn>
     <v-btn class="mx-2" @click="removePlayer">remove player</v-btn>
+    <p>
+      There are 3 ways to invite someone to your board.<br/>
+      1. Share the invite code. (top right corner)<br/>
+      2. Show them the QR code to scan. (click the code on the top right corner)<br/>
+      3. Share the URL. (also in the same place)
+    </p>
     <!-- <v-container>
       <p>Format</p>
       <v-radio-group v-model="settings.format" mandatory>
@@ -37,8 +43,7 @@ var generate = require("nanoid-good/generate")(en)
 
 export default {
   name: "Settings",
-  data: () => ({
-  }),
+  data: () => ({}),
   methods: {
     resetLife() {
       this.$store.dispatch('resetLife')

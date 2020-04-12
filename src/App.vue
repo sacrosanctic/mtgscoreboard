@@ -65,6 +65,7 @@
             height="100%"
             :src="qrCode"
           ></v-img>
+          <a :href="inviteURL">{{inviteURL}}</a>
           <v-text-field
             label="invite code"
             single-line
@@ -127,6 +128,9 @@ export default {
     inviteCodeDisable: false,
   }),
   computed: {
+    inviteURL() {
+      return encodeURI(window.location.hostname + '/mtgscoreboard/scoreboard/') + this.settings.scoreboardId
+    },
     qrCode() {
       //generate invite code for current scoreboard
       return 'https://api.qrserver.com/v1/create-qr-code/?margin=0&size=500x500&data='+
