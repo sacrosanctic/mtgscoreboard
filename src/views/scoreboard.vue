@@ -1,7 +1,8 @@
 <template>
   <v-container v-if="!loading" pt-0 pb-0>
-    <v-row>
-      <v-col cols="12" sm="4" v-for="(player, i) in players" :key="i">
+    <v-row justify="center">
+      <template v-for="(player, i) in players" >
+      <v-col cols="12" sm="4" :key="i">
         <v-card>
           <v-row no-gutters>
             <v-col cols="12">
@@ -64,7 +65,6 @@
                       style="text-align:center"
                       :class="cmdrDmgColour(cmdrDmgs[player2.id][player.id])"
                     >
-                      <!-- {{player2.name}} -->
                       {{zeroReplacement(cmdrDmgs[player2.id][player.id])}}
                     </v-card>
                   </v-col>
@@ -74,6 +74,12 @@
           </v-row>
         </v-card>
       </v-col>
+      <v-responsive
+        v-if="skipCheck(i,players)"
+        :key="`width-${i}`"
+        width="100%"
+      ></v-responsive>
+      </template>
     </v-row>
   </v-container>
 </template>
@@ -100,6 +106,10 @@ export default {
   },
   watch: {},
   methods: {
+    skipCheck(i, players) {
+      //condition to move the 4 players
+      return i === 1 && players.length == 4
+    },
     cmdrDmgColour(dmg) {
       let colour = "";
       if (dmg <= 4) colour = "";

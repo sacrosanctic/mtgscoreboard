@@ -19,13 +19,13 @@
     <!-- starting life {{format[settings.format].startingLife}} -->
     <v-btn class="mx-2" @click="addPlayer">add player</v-btn>
     <v-btn class="mx-2" @click="removePlayer">remove player</v-btn>
-    <v-container>
+    <!-- <v-container>
       <p>Format</p>
       <v-radio-group v-model="settings.format" mandatory>
         <v-radio label="commander" value="commander"></v-radio>
         <v-radio label="brawl" value="brawl"></v-radio>
       </v-radio-group>
-    </v-container>
+    </v-container> -->
   </v-container>
 </template>
 
