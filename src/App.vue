@@ -129,7 +129,7 @@ export default {
   }),
   computed: {
     inviteURL() {
-      return encodeURI(window.location.hostname + '/mtgscoreboard/scoreboard/') + this.settings.scoreboardId
+      return 'https://'+window.location.hostname + '/mtgscoreboard/scoreboard/' + this.settings.scoreboardId
     },
     qrCode() {
       //generate invite code for current scoreboard
